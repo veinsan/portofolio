@@ -6,7 +6,7 @@ export default function About() {
   return (
     <section id="about" className="scroll-mt-20 py-24 sm:py-32">
       <div className="mx-auto max-w-6xl px-5 sm:px-8">
-        <SectionHeading index="03" label="About" title="Engineer first, then the models" />
+        <SectionHeading label="About" title="From C to computer vision" />
 
         <div className="grid gap-14 lg:grid-cols-5 lg:gap-16">
           <div className="lg:col-span-3">

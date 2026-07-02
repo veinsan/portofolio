@@ -8,7 +8,7 @@ export default function Footer() {
           © {new Date().getFullYear()} {site.name}
         </p>
         <p>
-          Designed &amp; built with Next.js — <span className="text-muted">fast by default</span>
+          Designed &amp; built by {site.name}. <span className="text-muted">Fast by default.</span>
         </p>
       </div>
     </footer>

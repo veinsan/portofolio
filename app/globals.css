@@ -7,17 +7,18 @@
 }
 
 @theme {
-  /* Surfaces — no pure black (OLED smear, harsh contrast) */
+  /* Surfaces: no pure black (OLED smear, harsh contrast) */
   --color-deep: #020203;
   --color-base: #050506;
   --color-elevated: #0a0a0c;
   --color-fg: #ededef;
   --color-muted: #9a9aa3;
-  --color-faint: #6b6b76;
+  /* 5.5:1 on base; the old #6b6b76 failed AA at 3.9:1 */
+  --color-faint: #84848f;
   --color-line: rgba(255, 255, 255, 0.08);
   --color-line-strong: rgba(255, 255, 255, 0.16);
 
-  /* Accent system — indigo core, cyan used sparingly in gradients */
+  /* Accent system: indigo core, cyan used sparingly in gradients */
   --color-accent: #a5b4fc;
   --color-accent-mid: #818cf8;
   --color-accent-strong: #4f46e5;
@@ -54,19 +55,92 @@ body {
   border-radius: 4px;
 }
 
-/* ---- Scroll reveal (driven by Reveal.tsx) ---- */
-.reveal {
+/* ---- Scroll reveal (driven by Reveal.tsx) ----
+   Content is visible by default; the entrance only applies once an inline
+   script tags <html> with .js, so JS-off and pre-hydration visitors read
+   a complete page. */
+html.js .reveal {
   opacity: 0;
   transform: translateY(18px);
   transition:
-    opacity 0.7s var(--ease-out-expo),
-    transform 0.7s var(--ease-out-expo);
+    opacity 0.5s var(--ease-out-expo),
+    transform 0.5s var(--ease-out-expo);
   transition-delay: var(--reveal-delay, 0ms);
-  will-change: opacity, transform;
 }
-.reveal.is-visible {
+html.js .reveal.is-visible {
   opacity: 1;
   transform: translateY(0);
+}
+
+/* ---- Hero load choreography (one-shot, above the fold) ---- */
+@keyframes hero-rise {
+  from {
+    opacity: 0;
+    transform: translateY(22px);
+    filter: blur(5px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: blur(0);
+  }
+}
+html.js .hero-enter {
+  animation: hero-rise 0.8s var(--ease-out-expo) both;
+  animation-delay: var(--enter-delay, 0ms);
+}
+
+@keyframes atmo-in {
+  from {
+    opacity: 0;
+  }
+}
+html.js .hero-atmo {
+  animation: atmo-in 1.4s var(--ease-out-expo) both;
+}
+
+@keyframes line-x {
+  from {
+    transform: scaleX(0);
+  }
+}
+html.js .hero-hairline {
+  transform-origin: left;
+  animation: line-x 0.9s var(--ease-out-expo) 0.55s both;
+}
+
+@keyframes nudge {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(5px);
+  }
+}
+.animate-nudge {
+  animation: nudge 2.6s ease-in-out infinite;
+}
+
+/* ---- Timeline spine draws in when the section enters view ---- */
+html.js .timeline-draw {
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform 0.8s var(--ease-out-expo) 80ms;
+}
+html.js ol:has(.reveal.is-visible) .timeline-draw {
+  transform: scaleY(1);
+}
+
+/* ---- Mobile menu entrance ---- */
+@keyframes menu-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+}
+html.js .menu-in {
+  animation: menu-in 0.22s var(--ease-out-expo) both;
 }
 
 /* ---- Hero backdrop: faint blueprint grid, radially masked ---- */
@@ -115,25 +189,52 @@ body {
   animation: pulse-dot 2.4s ease-in-out infinite;
 }
 
-/* Gradient headline text */
-.text-gradient {
-  background: linear-gradient(100deg, #a5b4fc 0%, #818cf8 45%, #22d3ee 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+/* Animated underline for inline links (GPU: scaleX, not background-size) */
+.link-underline {
+  position: relative;
+}
+.link-underline::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s var(--ease-out-expo);
+}
+.link-underline:focus-visible::after {
+  transform: scaleX(1);
+}
+@media (hover: hover) and (pointer: fine) {
+  .link-underline:hover::after {
+    transform: scaleX(1);
+  }
 }
 
-/* Animated underline for inline links */
-.link-underline {
-  background-image: linear-gradient(currentColor, currentColor);
-  background-size: 0% 1px;
-  background-position: 0 100%;
-  background-repeat: no-repeat;
-  transition: background-size 0.3s var(--ease-out-expo);
+/* ---- Project showcase panel transition (replayed via React key) ---- */
+@keyframes showcase-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
-.link-underline:hover,
-.link-underline:focus-visible {
-  background-size: 100% 1px;
+.showcase-enter {
+  animation: showcase-in 0.25s var(--ease-out-expo);
+}
+
+/* Preview image settles from a slight zoom on each selection */
+@keyframes img-settle {
+  from {
+    transform: scale(1.035);
+  }
+}
+html.js .showcase-enter img {
+  animation: img-settle 0.35s var(--ease-out-expo) both;
 }
 
 /* Glass card */
@@ -147,28 +248,58 @@ body {
     box-shadow 0.25s var(--ease-out-expo),
     background-color 0.25s var(--ease-out-expo);
 }
-.card:hover {
-  background: rgba(255, 255, 255, 0.05);
-  border-color: var(--color-line-strong);
-  transform: translateY(-3px);
-  box-shadow:
-    0 12px 40px -12px rgba(79, 70, 229, 0.25),
-    0 0 0 1px rgba(129, 140, 248, 0.08);
+/* Gated: touch devices fire sticky hovers on tap */
+@media (hover: hover) and (pointer: fine) {
+  .card:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: var(--color-line-strong);
+    transform: translateY(-3px);
+    box-shadow:
+      0 12px 40px -12px rgba(79, 70, 229, 0.25),
+      0 0 0 1px rgba(129, 140, 248, 0.08);
+  }
+}
+
+/* Reduced motion: gentler, not zero. Comprehension-aiding opacity fades
+   stay; all movement (translate, scale, drift, draw) is removed. */
+@keyframes fade-in-only {
+  from {
+    opacity: 0;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
   }
-  .reveal {
-    opacity: 1;
+  html.js .reveal {
     transform: none;
-    transition: none;
+    transition: opacity 0.2s ease;
+    transition-delay: 0ms;
+  }
+  html.js .hero-enter {
+    animation: fade-in-only 0.3s ease both;
+  }
+  html.js .menu-in {
+    animation: fade-in-only 0.15s ease both;
+  }
+  .showcase-enter {
+    animation: fade-in-only 0.2s ease;
   }
   .animate-drift,
   .animate-drift-slow,
-  .animate-pulse-dot {
+  .animate-pulse-dot,
+  .animate-nudge {
     animation: none;
+  }
+  html.js .hero-atmo,
+  html.js .hero-hairline,
+  html.js .showcase-enter img {
+    animation: none;
+  }
+  html.js .timeline-draw {
+    transform: none;
+    transition: none;
   }
   .card:hover {
     transform: none;

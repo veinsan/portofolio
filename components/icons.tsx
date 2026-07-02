@@ -1,7 +1,7 @@
 import type { SVGProps } from "react";
 
 /**
- * Inline SVG icon set — single family, 1.5px stroke, 24px grid.
+ * Inline SVG icon set: single family, 1.5px stroke, 24px grid.
  * Kept dependency-free so the bundle stays lean.
  */
 
@@ -92,6 +92,23 @@ export function XSocial(props: IconProps) {
   return (
     <svg {...base(props)} fill="currentColor" stroke="none">
       <path d="M18.24 2.25h3.31l-7.23 8.26 8.5 11.24h-6.66l-5.21-6.82-5.97 6.82H1.66l7.73-8.84L1.25 2.25h6.83l4.71 6.23 5.45-6.23zm-1.16 17.52h1.83L7.08 4.13H5.12l11.96 15.64z" />
+    </svg>
+  );
+}
+
+export function Copy(props: IconProps) {
+  return (
+    <svg {...base(props)}>
+      <rect x="9" y="9" width="11" height="11" rx="2" />
+      <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+    </svg>
+  );
+}
+
+export function Check(props: IconProps) {
+  return (
+    <svg {...base(props)}>
+      <path d="M5 13l4 4L19 7" />
     </svg>
   );
 }

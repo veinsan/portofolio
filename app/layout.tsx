@@ -24,10 +24,10 @@ const jetbrainsMono = JetBrains_Mono({
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
-  title: `${site.name} — ${site.role}`,
+  title: `${site.name} · ${site.role}`,
   description: site.tagline,
   openGraph: {
-    title: `${site.name} — ${site.role}`,
+    title: `${site.name} · ${site.role}`,
     description: site.tagline,
     url: site.url,
     siteName: site.name,
@@ -36,7 +36,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: `${site.name} — ${site.role}`,
+    title: `${site.name} · ${site.role}`,
     description: site.tagline,
   },
 };
@@ -52,6 +52,14 @@ export default function RootLayout({
       className={`${inter.variable} ${spaceGrotesk.variable} ${jetbrainsMono.variable}`}
     >
       <body>
+        {/* Tags <html> before first paint so CSS only gates content behind
+            animations when JS is actually running; no-JS visitors get a
+            fully visible page. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: "document.documentElement.classList.add('js')",
+          }}
+        />
         <a
           href="#main"
           className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-100 focus:rounded-full focus:bg-accent-strong focus:px-5 focus:py-3 focus:text-sm focus:font-semibold focus:text-white"

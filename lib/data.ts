@@ -1,74 +1,107 @@
 /**
  * Single source of truth for all site content.
- * Swap the placeholder projects/experience below with your real work —
- * nothing else in the codebase needs to change.
+ * Everything here is sourced from cv.md; keep it truthful when editing.
  */
 
 export const site = {
   name: "Riantama Putra",
-  shortName: "riantama",
-  role: "Software & AI Engineer",
-  roleInline: "software & AI engineer", // mid-sentence form — keeps "AI" capitalized
-  tagline: "I design and build intelligent systems that ship — from LLM pipelines to the products around them.",
+  role: "Data Science & AI Engineer",
+  roleInline:
+    "a data science & AI engineer studying Information Systems & Technology at ITB",
+  tagline:
+    "I build AI systems end to end, from competition-grade computer vision models to a full-stack learning platform running in production.",
   email: "riantamaputra751@gmail.com",
-  location: "Jakarta, Indonesia (UTC+7)",
-  availability: "Open to select projects",
+  location: "Bandung, Indonesia (UTC+7)",
+  availability: "Open to internships & collaborations",
+  stats: [
+    { value: "8", label: "projects across AI, web & systems" },
+    { value: "Finalist", label: "DAC FindIT! 2026, face anti-spoofing" },
+    { value: "ITB '28", label: "B.Sc. Information Systems & Tech" },
+  ],
   socials: [
     { label: "GitHub", href: "https://github.com/veinsan" },
-    { label: "LinkedIn", href: "https://www.linkedin.com/in/riantama-putra" },
-    { label: "X / Twitter", href: "https://x.com/riantama" },
+    { label: "LinkedIn", href: "https://www.linkedin.com/in/riantamaputra/" },
   ],
-  url: "https://riantama.dev",
+  url: "https://riantamaputra.tech",
 };
 
 export type Project = {
   index: string;
   title: string;
+  /** Optional: your part in a team project */
+  role?: string;
   description: string;
   metric: string;
   stack: string[];
-  href: string;
-  featured?: boolean;
+  /** Preview image under /public */
+  image: string;
+  github: string;
+  /** Optional live demo URL */
+  demo?: string;
 };
 
 export const projects: Project[] = [
   {
     index: "01",
-    title: "Nimbus RAG",
+    title: "Face Anti-Spoofing System",
     description:
-      "Production retrieval-augmented generation platform for enterprise document search. Hybrid retrieval, semantic caching and evaluation loops baked in from day one.",
-    metric: "40k+ documents indexed · p95 latency 320ms",
-    stack: ["Python", "FastAPI", "pgvector", "Next.js"],
-    href: "#",
-    featured: true,
+      "Telling a real face from a photo, screen replay or mask. A multi-class anti-spoofing system built for a limited-data competition setting: a hybrid dual-stream architecture pairing DINOv2 (ViT-S/14) with ConvNeXtV2-Tiny, sharpened by Laplacian high-frequency enhancement and asymmetric gated fusion.",
+    metric: "0.982 private leaderboard · Finalist, DAC FindIT! 2026",
+    stack: ["Python", "PyTorch", "DINOv2", "ConvNeXtV2"],
+    image: "/projects/face-anti-spoofing.svg",
+    github: "https://github.com/veinsan/dac-findit-2026",
   },
   {
     index: "02",
-    title: "Sentinel Vision",
+    title: "OceanEarn",
     description:
-      "Real-time defect detection running on edge devices for a manufacturing line. Custom-trained detection models, quantized and deployed without a cloud round-trip.",
-    metric: "45 FPS on Jetson Orin · 99.2% recall",
-    stack: ["PyTorch", "TensorRT", "ONNX", "Go"],
-    href: "#",
-    featured: true,
+      "Maritime waste reward platform: role-based auth for fishers, collection points and admins, Google SSO, AI-powered waste estimation with YOLO, perceptual hashing to catch duplicate submissions, and Haversine-based nearest-TPS lookup.",
+    metric: "19 REST endpoints · 3 auth roles · I/O Festival 2026",
+    stack: ["React", "Django", "PostgreSQL", "YOLO"],
+    image: "/projects/oceanearn.svg",
+    github: "https://github.com/veinsan/oceanearn",
   },
   {
     index: "03",
-    title: "Ledgerline",
+    title: "BelajarDuluDek",
     description:
-      "Event-driven core banking backend handling reconciliation and settlement. Exactly-once processing across services, with full replayability for audits.",
-    metric: "12k TPS sustained · zero-loss replay",
-    stack: ["Go", "Kafka", "PostgreSQL", "Kubernetes"],
-    href: "#",
+      "Full-stack learning platform for Indonesian high-school students: AI chat powered by the Gemini and Claude APIs, flashcard generation, a quiz and tryout system, and JWT-based authentication.",
+    metric: "Live in production · Gemini + Claude APIs",
+    stack: ["Next.js 16", "TypeScript", "Prisma ORM", "PostgreSQL"],
+    image: "/projects/belajarduludek.svg",
+    github: "https://github.com/veinsan/belajarduludek",
   },
   {
     index: "04",
-    title: "EvalKit",
+    title: "Nimonscooked",
     description:
-      "Open-source toolkit for evaluating LLM applications: golden datasets, regression gates in CI, and drift dashboards your whole team can read.",
-    metric: "1.2k GitHub stars · used in 30+ teams",
-    stack: ["TypeScript", "Python", "LLM-as-judge"],
-    href: "#",
+      "Cooperative cooking simulation game with multi-threaded concurrency for cooking and cutting stations, a state machine for ingredient processing, and a deliberately pattern-driven core.",
+    metric: "Multi-threaded stations · Singleton, Factory, Observer, MVC",
+    stack: ["Java", "LibGDX"],
+    image: "/projects/nimonscooked.svg",
+    github: "https://github.com/veinsan/nimonscooked",
+  },
+  {
+    index: "05",
+    title: "Ganyang Lapar di Gelap Nyawang",
+    role: "Landing & directory pages",
+    description:
+      "Directory platform helping people discover local food and small businesses (UMKM) around the Gelap Nyawang area. Built the landing and directory pages end to end.",
+    metric: "Live search · category filtering · dark mode",
+    stack: ["Next.js", "Tailwind CSS", "Framer Motion"],
+    image: "/projects/gelap-nyawang.svg",
+    github: "https://github.com/veinsan/GelapNyawang",
+  },
+  {
+    index: "06",
+    title: "DearDiary",
+    role: "Login & auth module",
+    description:
+      "Desktop application for managing internal innovation projects: idea tracking, experiment logs and prototype version history. Owned the login and authentication module.",
+    metric: "Role-based access control · team project",
+    stack: ["Java", "JavaFX", "PostgreSQL", "Maven"],
+    image: "/projects/deardiary.svg",
+    github: "https://github.com/veinsan/IF2050-2026-K01-G12-DearDiary",
   },
 ];
 
@@ -82,75 +115,79 @@ export type Experience = {
 
 export const experience: Experience[] = [
   {
-    period: "2024 — Present",
-    role: "Senior Software Engineer, AI Platform",
-    company: "Aurora Labs",
+    period: "Feb–Apr 2025",
+    role: "Backend Developer",
+    company: "Wisuda April ITB 2025",
     summary:
-      "Leading the team that turns model research into reliable product features.",
+      "ITB's graduation ceremony event, supported by a dedicated IT team building its digital services.",
     highlights: [
-      "Built the LLM gateway serving 3M+ requests/day with cost and quality routing",
-      "Cut inference spend 38% via semantic caching and model tiering",
+      "Developed the backend for the anonymous message (Menfess) feature using Next.js, TypeScript and Prisma ORM on the T3 stack",
+      "Built it as a standalone module designed for clean integration into the main user profile",
     ],
   },
   {
-    period: "2022 — 2024",
-    role: "Machine Learning Engineer",
-    company: "Kanaya Tech",
+    period: "2024–Present",
+    role: "Student Leadership",
+    company: "Institut Teknologi Bandung",
     summary:
-      "Owned computer-vision systems end to end — data pipelines to edge deployment.",
+      "Leading divisions across major ITB student events alongside full-time study.",
     highlights: [
-      "Shipped defect-detection models to 12 factory sites across Southeast Asia",
-      "Reduced false-positive rate 4× with active-learning retraining loops",
+      "Head of Sponsorship Division, Arkavidia 11.0",
+      "Head of Creative Division, Aksi Angkatan SPARTA HMIF ITB 2025",
+      "Mentor & Field Committee, OSKM ITB 2025",
+      "Head of Public Relations Division, Formatur Ketua Angkatan STEI-K 2024",
     ],
   },
   {
-    period: "2020 — 2022",
-    role: "Full-stack Engineer",
-    company: "Studio Delta",
+    period: "2024–2028 (expected)",
+    role: "B.Sc. Information Systems & Technology",
+    company: "Institut Teknologi Bandung",
     summary:
-      "Built and scaled web products for early-stage startups as engineer #3.",
-    highlights: [
-      "Took two products from prototype to 100k monthly active users",
-      "Introduced typed API contracts that halved integration bugs",
-    ],
-  },
-  {
-    period: "2016 — 2020",
-    role: "B.Sc. Computer Science",
-    company: "Universitas Indonesia",
-    summary:
-      "Focus on machine learning and distributed systems. Graduated cum laude.",
+      "Undergraduate degree in Information Systems and Technology. CGPA 3.37/4.00.",
     highlights: [],
   },
 ];
 
 export const skills: { group: string; items: string[] }[] = [
   {
-    group: "Languages",
-    items: ["Python", "TypeScript", "Go", "SQL", "Rust"],
-  },
-  {
     group: "AI / ML",
-    items: ["PyTorch", "LLM fine-tuning", "RAG systems", "vLLM", "LangGraph", "Evaluation & observability"],
+    items: ["PyTorch", "Transformers", "LightGBM", "XGBoost", "CatBoost", "scikit-learn", "Pandas", "NumPy"],
   },
   {
-    group: "Web & APIs",
-    items: ["React / Next.js", "Node.js", "FastAPI", "gRPC", "Tailwind CSS"],
+    group: "Languages",
+    items: ["Python", "TypeScript", "JavaScript", "C", "Java", "SQL"],
   },
   {
-    group: "Infrastructure",
-    items: ["Docker", "Kubernetes", "AWS / GCP", "PostgreSQL", "Kafka", "Terraform"],
+    group: "Frontend",
+    items: ["React", "Next.js", "Tailwind CSS", "Framer Motion"],
+  },
+  {
+    group: "Backend & Cloud",
+    items: ["Django", "FastAPI", "Node.js", "PostgreSQL", "Prisma ORM", "JWT", "Supabase", "Docker", "Vercel"],
+  },
+  {
+    group: "Tooling",
+    items: ["Git", "Linux", "REST APIs", "CI/CD"],
   },
 ];
 
 export const about = {
   intro:
-    "I'm a software engineer who went deep on machine learning — not the other way around. That order matters: I care as much about the deploy pipeline, the p95 latency and the on-call story as I do about model quality.",
+    "I'm an Information Systems & Technology undergraduate at Institut Teknologi Bandung working in machine learning and data science, from a competition-placing face anti-spoofing model to an AI-powered learning platform running in production.",
   body:
-    "For the last five years I've been building AI-powered products across fintech, manufacturing and developer tools — usually owning the path from ambiguous idea to something running in production. I like small teams, sharp problems, and systems that are boring to operate.",
+    "The models come first: PyTorch architectures for computer vision, gradient-boosting stacks like LightGBM and XGBoost, and the evaluation discipline that competitions demand. The engineering range behind them is deliberate. I've written a terminal-based hospital system in C, desktop software in JavaFX, a multi-threaded game in LibGDX, and web platforms on Next.js and Django, because strong fundamentals are what turn a model into a product. Outside the codebase, I lead divisions for some of ITB's biggest student events, which keeps me sharp on deadlines, teams and communication.",
   principles: [
-    { title: "Ship the whole system", text: "A model is 10% of the work. The product, data loops and guardrails around it are the job." },
-    { title: "Measure before magic", text: "Evals, tracing and honest baselines before reaching for a bigger model." },
-    { title: "Fast is a feature", text: "Latency budgets are product decisions. I design for them from the first commit." },
+    {
+      title: "Ship the whole system",
+      text: "A model is a fraction of the work. Auth, APIs, data flows and deployment are the job too.",
+    },
+    {
+      title: "Fundamentals first",
+      text: "C, Java, algorithms and design patterns before frameworks, so abstractions never feel like magic.",
+    },
+    {
+      title: "Learn by building",
+      text: "Every new tool earns its place through a real project, not a tutorial.",
+    },
   ],
 };

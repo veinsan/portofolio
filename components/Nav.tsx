@@ -22,11 +22,17 @@ export default function Nav() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Lock body scroll while the mobile menu is open
+  // Lock body scroll while the mobile menu is open; Escape closes it
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false);
+    };
+    window.addEventListener("keydown", onKey);
     return () => {
       document.body.style.overflow = "";
+      window.removeEventListener("keydown", onKey);
     };
   }, [open]);
 
@@ -48,8 +54,10 @@ export default function Nav() {
           onClick={() => setOpen(false)}
         >
           <span className="inline-block h-2 w-2 rounded-full bg-accent-mid shadow-[0_0_12px_rgba(129,140,248,0.8)]" />
-          {site.shortName}
-          <span className="text-faint">.dev</span>
+          <span>
+            {site.name}
+            <span className="text-accent-mid">.</span>
+          </span>
         </a>
 
         {/* Desktop links */}
@@ -65,13 +73,13 @@ export default function Nav() {
           ))}
           <a
             href={`mailto:${site.email}`}
-            className="rounded-full border border-line-strong px-4 py-2 text-sm font-medium text-fg transition-colors hover:border-accent-mid hover:text-accent"
+            className="rounded-full border border-line-strong px-4 py-2 text-sm font-medium text-fg transition duration-150 hover:border-accent-mid hover:text-accent active:scale-[0.98]"
           >
             Get in touch
           </a>
         </div>
 
-        {/* Mobile toggle — 44px touch target */}
+        {/* Mobile toggle, 44px touch target */}
         <button
           type="button"
           aria-expanded={open}
@@ -86,7 +94,7 @@ export default function Nav() {
 
       {/* Mobile menu */}
       {open && (
-        <div id="mobile-menu" className="border-t border-line bg-base/95 backdrop-blur-xl md:hidden">
+        <div id="mobile-menu" className="menu-in border-t border-line bg-base/95 backdrop-blur-xl md:hidden">
           <div className="mx-auto flex max-w-6xl flex-col px-5 py-4">
             {links.map((l) => (
               <a
