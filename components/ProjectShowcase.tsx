@@ -1,6 +1,6 @@
 "use client";
 
-import { useId, useRef, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import Image from "next/image";
 import type { Project } from "@/lib/data";
 import { ExternalLink, GitHub } from "@/components/icons";
@@ -16,6 +16,24 @@ export default function ProjectShowcase({ projects }: { projects: Project[] }) {
   const project = projects[active];
   const baseId = useId();
   const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
+  const listRef = useRef<HTMLDivElement>(null);
+  // Fade the rail's clipped edge while more tabs exist to the right
+  const [moreRight, setMoreRight] = useState(false);
+
+  useEffect(() => {
+    const el = listRef.current;
+    if (!el) return;
+    const update = () =>
+      setMoreRight(el.scrollWidth - el.clientWidth - el.scrollLeft > 8);
+    update();
+    el.addEventListener("scroll", update, { passive: true });
+    const ro = new ResizeObserver(update);
+    ro.observe(el);
+    return () => {
+      el.removeEventListener("scroll", update);
+      ro.disconnect();
+    };
+  }, []);
 
   function selectAndFocus(i: number) {
     const next = (i + projects.length) % projects.length;
@@ -50,9 +68,11 @@ export default function ProjectShowcase({ projects }: { projects: Project[] }) {
     <div className="grid gap-5 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-8">
       {/* Project list: horizontal scroll row on mobile, vertical rail on desktop */}
       <div
+        ref={listRef}
         role="tablist"
         aria-label="Selected projects"
         onKeyDown={onKeyDown}
+        data-fade-end={moreRight}
         className="-mx-5 flex gap-2.5 overflow-x-auto px-5 pb-1 sm:mx-0 sm:px-0 lg:flex-col lg:gap-3 lg:overflow-visible lg:pb-0"
       >
         {projects.map((p, i) => {

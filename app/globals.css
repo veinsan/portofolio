@@ -203,13 +203,23 @@ html.js .menu-in {
   transform-origin: left;
   transition: transform 0.3s var(--ease-out-expo);
 }
-.link-underline:focus-visible::after {
+/* The underline span may sit inside a larger tap target; the parent
+   anchor's hover/focus drives it */
+.link-underline:focus-visible::after,
+a:focus-visible > .link-underline::after {
   transform: scaleX(1);
 }
 @media (hover: hover) and (pointer: fine) {
-  .link-underline:hover::after {
+  .link-underline:hover::after,
+  a:hover > .link-underline::after {
     transform: scaleX(1);
   }
+}
+
+/* Horizontal tab rail: fade the clipped edge while more tabs exist
+   (attribute toggled from scroll position in ProjectShowcase) */
+[data-fade-end="true"] {
+  mask-image: linear-gradient(90deg, #000 calc(100% - 56px), transparent);
 }
 
 /* ---- Project showcase panel transition (replayed via React key) ---- */

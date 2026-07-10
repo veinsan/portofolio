@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { site } from "@/lib/data";
 import { Close, Menu } from "@/components/icons";
 
@@ -14,6 +14,8 @@ const links = [
 export default function Nav() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const toggleRef = useRef<HTMLButtonElement>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 12);
@@ -22,10 +24,12 @@ export default function Nav() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Lock body scroll while the mobile menu is open; Escape closes it
+  // Mobile menu: lock body scroll, move focus in on open, Escape closes,
+  // focus returns to the toggle on close (WCAG disclosure pattern)
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
     if (!open) return;
+    menuRef.current?.querySelector<HTMLElement>("a")?.focus();
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") setOpen(false);
     };
@@ -33,6 +37,7 @@ export default function Nav() {
     return () => {
       document.body.style.overflow = "";
       window.removeEventListener("keydown", onKey);
+      toggleRef.current?.focus();
     };
   }, [open]);
 
@@ -50,7 +55,7 @@ export default function Nav() {
       >
         <a
           href="#top"
-          className="flex items-center gap-2.5 font-display text-[15px] font-semibold tracking-tight text-fg"
+          className="flex min-h-11 items-center gap-2.5 font-display text-[15px] font-semibold tracking-tight text-fg"
           onClick={() => setOpen(false)}
         >
           <span className="inline-block h-2 w-2 rounded-full bg-accent-mid shadow-[0_0_12px_rgba(129,140,248,0.8)]" />
@@ -66,14 +71,14 @@ export default function Nav() {
             <a
               key={l.href}
               href={l.href}
-              className="link-underline py-2 text-sm text-muted transition-colors hover:text-fg"
+              className="flex min-h-11 items-center text-sm text-muted transition-colors hover:text-fg"
             >
-              {l.label}
+              <span className="link-underline">{l.label}</span>
             </a>
           ))}
           <a
             href={`mailto:${site.email}`}
-            className="rounded-full border border-line-strong px-4 py-2 text-sm font-medium text-fg transition duration-150 hover:border-accent-mid hover:text-accent active:scale-[0.98]"
+            className="inline-flex min-h-11 items-center rounded-full border border-line-strong px-4 text-sm font-medium text-fg transition duration-150 hover:border-accent-mid hover:text-accent active:scale-[0.98]"
           >
             Get in touch
           </a>
@@ -81,6 +86,7 @@ export default function Nav() {
 
         {/* Mobile toggle, 44px touch target */}
         <button
+          ref={toggleRef}
           type="button"
           aria-expanded={open}
           aria-controls="mobile-menu"
@@ -94,7 +100,11 @@ export default function Nav() {
 
       {/* Mobile menu */}
       {open && (
-        <div id="mobile-menu" className="menu-in border-t border-line bg-base/95 backdrop-blur-xl md:hidden">
+        <div
+          ref={menuRef}
+          id="mobile-menu"
+          className="menu-in border-t border-line bg-base/95 backdrop-blur-xl md:hidden"
+        >
           <div className="mx-auto flex max-w-6xl flex-col px-5 py-4">
             {links.map((l) => (
               <a

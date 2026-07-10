@@ -15,7 +15,7 @@ Single dark theme ("cinematic dark"). Body is a fixed vertical gradient `#0a0a0f
 | `--color-elevated` | `#0a0a0c` | Raised surfaces (chips, badges) |
 | `--color-fg` | `#ededef` | Primary text |
 | `--color-muted` | `#9a9aa3` | Secondary text |
-| `--color-faint` | `#6b6b76` | Tertiary text, labels |
+| `--color-faint` | `#84848f` | Tertiary text, labels (5.5:1 on base; AA) |
 | `--color-line` | `rgba(255,255,255,0.08)` | Hairline borders |
 | `--color-line-strong` | `rgba(255,255,255,0.16)` | Hover borders |
 | `--color-accent` | `#a5b4fc` | Accent text (indigo 300) |
@@ -24,7 +24,7 @@ Single dark theme ("cinematic dark"). Body is a fixed vertical gradient `#0a0a0f
 | `--color-glow` | `#22d3ee` | Cyan, gradient partner only |
 | `--color-ok` | `#4ade80` | Availability dot |
 
-Strategy: restrained. Indigo is the single accent; cyan appears only inside gradients (headline highlight, hairlines, image glows). Glass surfaces are `rgba(255,255,255,0.03-0.05)` with hairline borders.
+Strategy: restrained. Indigo is the single accent; headline emphasis is solid `--color-accent` (never gradient-clipped text); cyan appears only in decorative hairlines and image glows. Glass surfaces are `rgba(255,255,255,0.03-0.05)` with hairline borders.
 
 ## Typography
 
@@ -45,14 +45,15 @@ Self-hosted via `next/font`, `display: swap`. Hero H1: `clamp(2.6rem, 7.5vw, 5.5
 
 ## Components
 
-- **Nav**: fixed, transparent until scroll > 12px, then `bg-base/80 backdrop-blur-xl` + hairline. Wordmark "Riantama Putra." with accent period and glowing dot. Mobile: full-width menu, body scroll locked.
+- **Nav**: fixed, transparent until scroll > 12px, then `bg-base/80 backdrop-blur-xl` + hairline. Wordmark "Riantama Putra." with accent period and glowing dot. Every nav target is >=44px tall (the row appears at 768px, which is a touch surface); link underlines live on an inner span so hit areas can grow without moving the underline. Mobile: full-width menu, body scroll locked; focus moves to the first link on open and returns to the toggle on close (WCAG disclosure pattern), Escape closes.
 - **Hero**: layered backdrop (masked blueprint grid, two drifting glow blobs, neural-network particle canvas), availability badge with pulsing dot, gradient-highlight H1, two pill CTAs (solid indigo + outline), 3-stat row with hairline top border.
-- **Project showcase**: ARIA tablist (horizontal scroll row on mobile, vertical rail on desktop) driving a preview panel; panel re-keys per selection with a 250ms fade-and-rise (`showcase-in`) and a 350ms image settle. Preview images live at 16:10 under `/public/projects/`.
+- **Project showcase**: ARIA tablist (horizontal scroll row on mobile, vertical rail on desktop) driving a preview panel; the horizontal rail masks its clipped right edge (`data-fade-end`) while more tabs exist, clearing at scroll end; panel re-keys per selection with a 250ms fade-and-rise (`showcase-in`) and a 350ms image settle. Preview images live at 16:10 under `/public/projects/` as web-weight JPEGs (~50-100KB); heavy source posters stay in `assets-src/projects/` (kept in repo, never shipped).
+- **Contact conversion**: mailto pill + `CopyEmail` clipboard button with visible "Copied" confirmation and `aria-live` announcement, so the path survives machines without a mail client.
 - **Timeline**: bordered-left list with glowing nodes, mono periods, highlight bullets.
 - **Cards** (`.card`): glass tint, hairline border, hover lift (-3px) + indigo shadow. Used for About principles.
 - **Buttons**: primary = solid `accent-strong` pill with indigo glow shadow; secondary = hairline outline pill. Min height 44 to 48px.
 - **Chips**: mono 12 to 13px, hairline border, full radius.
-- **Section headings**: mono kicker `NN / LABEL` in accent + faint, display title 3xl/4xl, optional muted lede. Same pattern on all four sections.
+- **Section headings**: mono uppercase kicker label in accent (no numeric prefixes; numbering lives only in the showcase tab indices where it aids matching), display title 3xl/4xl, optional muted lede.
 
 ## Motion
 

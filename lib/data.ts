@@ -48,7 +48,7 @@ export const projects: Project[] = [
       "Telling a real face from a photo, screen replay or mask. A multi-class anti-spoofing system built for a limited-data competition setting: a hybrid dual-stream architecture pairing DINOv2 (ViT-S/14) with ConvNeXtV2-Tiny, sharpened by Laplacian high-frequency enhancement and asymmetric gated fusion.",
     metric: "0.982 private leaderboard · Finalist, DAC FindIT! 2026",
     stack: ["Python", "PyTorch", "DINOv2", "ConvNeXtV2"],
-    image: "/projects/face-anti-spoofing.svg",
+    image: "/projects/face-anti-spoofing.jpg",
     github: "https://github.com/veinsan/dac-findit-2026",
   },
   {
@@ -58,7 +58,7 @@ export const projects: Project[] = [
       "Maritime waste reward platform: role-based auth for fishers, collection points and admins, Google SSO, AI-powered waste estimation with YOLO, perceptual hashing to catch duplicate submissions, and Haversine-based nearest-TPS lookup.",
     metric: "19 REST endpoints · 3 auth roles · I/O Festival 2026",
     stack: ["React", "Django", "PostgreSQL", "YOLO"],
-    image: "/projects/oceanearn.svg",
+    image: "/projects/oceanearn.jpg",
     github: "https://github.com/veinsan/oceanearn",
   },
   {
@@ -68,7 +68,7 @@ export const projects: Project[] = [
       "Full-stack learning platform for Indonesian high-school students: AI chat powered by the Gemini and Claude APIs, flashcard generation, a quiz and tryout system, and JWT-based authentication.",
     metric: "Live in production · Gemini + Claude APIs",
     stack: ["Next.js 16", "TypeScript", "Prisma ORM", "PostgreSQL"],
-    image: "/projects/belajarduludek.svg",
+    image: "/projects/belajarduludek.jpg",
     github: "https://github.com/veinsan/belajarduludek",
   },
   {
@@ -89,7 +89,7 @@ export const projects: Project[] = [
       "Directory platform helping people discover local food and small businesses (UMKM) around the Gelap Nyawang area. Built the landing and directory pages end to end.",
     metric: "Live search · category filtering · dark mode",
     stack: ["Next.js", "Tailwind CSS", "Framer Motion"],
-    image: "/projects/gelap-nyawang.svg",
+    image: "/projects/gelap-nyawang.jpg",
     github: "https://github.com/veinsan/GelapNyawang",
   },
   {

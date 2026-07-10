@@ -12,6 +12,10 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Not app code: skill tooling, reference impl, unshipped source assets
+    ".claude/**",
+    "ref/**",
+    "assets-src/**",
   ]),
 ]);
 

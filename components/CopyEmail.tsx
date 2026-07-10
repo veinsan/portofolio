@@ -15,20 +15,28 @@ export default function CopyEmail({ email }: { email: string }) {
   useEffect(() => () => window.clearTimeout(timer.current), []);
 
   async function copy() {
+    let ok = true;
     try {
       await navigator.clipboard.writeText(email);
     } catch {
       // Clipboard API needs a secure context; fall back for http previews
-      const field = document.createElement("textarea");
-      field.value = email;
-      field.setAttribute("readonly", "");
-      field.style.position = "fixed";
-      field.style.opacity = "0";
-      document.body.appendChild(field);
-      field.select();
-      document.execCommand("copy");
-      field.remove();
+      try {
+        const field = document.createElement("textarea");
+        field.value = email;
+        field.setAttribute("readonly", "");
+        field.style.position = "fixed";
+        field.style.opacity = "0";
+        document.body.appendChild(field);
+        field.select();
+        ok = document.execCommand("copy");
+        field.remove();
+      } catch {
+        ok = false;
+      }
     }
+    // Never confirm a copy that didn't happen; the address stays readable
+    // on the mailto pill next to this button
+    if (!ok) return;
     setCopied(true);
     window.clearTimeout(timer.current);
     timer.current = window.setTimeout(() => setCopied(false), 2000);
