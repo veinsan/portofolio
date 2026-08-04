@@ -18,7 +18,7 @@ type RevealProps = {
 
 /**
  * Reveals content the first time it scrolls into view. Both animations
- * live in globals.css behind `html.js`, so prefers-reduced-motion and
+ * live in globals.css only when scripting is enabled, so reduced-motion and
  * no-JS visitors are handled purely in CSS.
  */
 export default function Reveal({

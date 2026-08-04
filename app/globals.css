@@ -39,61 +39,63 @@
   display: none;
 }
 
-html.js .opening-loader {
-  position: fixed;
-  inset: 0;
-  z-index: 100;
-  display: grid;
-  place-items: center;
-  background: #000;
-  pointer-events: none;
-  animation: loader-leave 1.2s cubic-bezier(0.87, 0, 0.13, 1) 0.7s both;
-}
-
-@keyframes rise-in {
-  from {
-    transform: translateY(115%);
+@media (scripting: enabled) {
+  .opening-loader {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    display: grid;
+    place-items: center;
+    background: #000;
+    pointer-events: none;
+    animation: loader-leave 1.2s cubic-bezier(0.87, 0, 0.13, 1) 0.7s both;
   }
-  to {
+
+  @keyframes rise-in {
+    from {
+      transform: translateY(115%);
+    }
+    to {
+      transform: translateY(0);
+    }
+  }
+
+  .load-wipe {
+    overflow: hidden;
+  }
+
+  .load-wipe > * {
+    animation: rise-in 1.25s cubic-bezier(0.87, 0, 0.13, 1) both;
+    animation-delay: calc(1.9s + var(--enter-delay, 0ms));
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(1.25rem);
+    transition:
+      opacity 0.75s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.75s cubic-bezier(0.22, 1, 0.36, 1);
+    transition-delay: var(--reveal-delay, 0ms);
+  }
+
+  .reveal.is-visible {
+    opacity: 1;
     transform: translateY(0);
   }
-}
 
-html.js .load-wipe {
-  overflow: hidden;
-}
+  .wipe {
+    overflow: hidden;
+  }
 
-html.js .load-wipe > * {
-  animation: rise-in 1.25s cubic-bezier(0.87, 0, 0.13, 1) both;
-  animation-delay: calc(1.9s + var(--enter-delay, 0ms));
-}
+  .wipe > .wipe-i {
+    transform: translateY(115%);
+    transition: transform 1s cubic-bezier(0.87, 0, 0.13, 1);
+    transition-delay: var(--reveal-delay, 0ms);
+  }
 
-html.js .reveal {
-  opacity: 0;
-  transform: translateY(1.25rem);
-  transition:
-    opacity 0.75s cubic-bezier(0.22, 1, 0.36, 1),
-    transform 0.75s cubic-bezier(0.22, 1, 0.36, 1);
-  transition-delay: var(--reveal-delay, 0ms);
-}
-
-html.js .reveal.is-visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-html.js .wipe {
-  overflow: hidden;
-}
-
-html.js .wipe > .wipe-i {
-  transform: translateY(115%);
-  transition: transform 1s cubic-bezier(0.87, 0, 0.13, 1);
-  transition-delay: var(--reveal-delay, 0ms);
-}
-
-html.js .wipe.is-visible > .wipe-i {
-  transform: translateY(0);
+  .wipe.is-visible > .wipe-i {
+    transform: translateY(0);
+  }
 }
 
 @keyframes grain {
@@ -213,26 +215,26 @@ body::after {
     scroll-behavior: auto;
   }
 
-  html.js .opening-loader {
+  .opening-loader {
     display: none;
   }
 
-  html.js .load-wipe {
+  .load-wipe {
     overflow: visible;
   }
 
-  html.js .load-wipe > * {
+  .load-wipe > * {
     animation: none;
   }
 
-  html.js .reveal,
-  html.js .wipe > .wipe-i {
+  .reveal,
+  .wipe > .wipe-i {
     opacity: 1;
     transform: none;
     transition: none;
   }
 
-  html.js .wipe {
+  .wipe {
     overflow: visible;
   }
 

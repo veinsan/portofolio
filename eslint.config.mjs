@@ -14,6 +14,7 @@ const eslintConfig = defineConfig([
     "next-env.d.ts",
     // Not app code: skill tooling, reference impl, unshipped source assets
     ".claude/**",
+    ".tmp/**",
     "ref/**",
     "assets-src/**",
   ]),

@@ -55,11 +55,6 @@ export default function RootLayout({
   return (
     <html lang="en" className={bodoni.variable}>
       <body className="bg-[#f4f1ea] font-sans antialiased">
-        <script
-          dangerouslySetInnerHTML={{
-            __html: "document.documentElement.classList.add('js')",
-          }}
-        />
         <a
           href="#main"
           className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[110] focus:bg-[#171717] focus:px-5 focus:py-3 focus:text-sm focus:font-semibold focus:text-white"
