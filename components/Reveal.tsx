@@ -8,14 +8,26 @@ type RevealProps = {
   delay?: number;
   className?: string;
   as?: ElementType;
+  /**
+   * "wipe" masks the block and slides its content up from below, the way
+   * the display type enters. It clips, so keep it off anything that lifts,
+   * scales or shows a focus ring on hover.
+   */
+  variant?: "rise" | "wipe";
 };
 
 /**
- * Fades content in on first scroll into view.
- * The animation itself lives in globals.css (.reveal / .is-visible),
- * so prefers-reduced-motion is honored purely in CSS.
+ * Reveals content the first time it scrolls into view. Both animations
+ * live in globals.css behind `html.js`, so prefers-reduced-motion and
+ * no-JS visitors are handled purely in CSS.
  */
-export default function Reveal({ children, delay = 0, className = "", as: Tag = "div" }: RevealProps) {
+export default function Reveal({
+  children,
+  delay = 0,
+  className = "",
+  as: Tag = "div",
+  variant = "rise",
+}: RevealProps) {
   const ref = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -28,18 +40,26 @@ export default function Reveal({ children, delay = 0, className = "", as: Tag = 
           observer.disconnect();
         }
       },
-      { threshold: 0.15, rootMargin: "0px 0px -40px 0px" }
+      { threshold: 0.1, rootMargin: "0px 0px -40px 0px" }
     );
     observer.observe(el);
     return () => observer.disconnect();
   }, []);
 
+  const style = delay
+    ? ({ "--reveal-delay": `${delay}ms` } as React.CSSProperties)
+    : undefined;
+
+  if (variant === "wipe") {
+    return (
+      <Tag ref={ref} className={`wipe ${className}`} style={style}>
+        <div className="wipe-i">{children}</div>
+      </Tag>
+    );
+  }
+
   return (
-    <Tag
-      ref={ref}
-      className={`reveal ${className}`}
-      style={delay ? ({ "--reveal-delay": `${delay}ms` } as React.CSSProperties) : undefined}
-    >
+    <Tag ref={ref} className={`reveal ${className}`} style={style}>
       {children}
     </Tag>
   );

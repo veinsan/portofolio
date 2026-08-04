@@ -30,44 +30,11 @@ export function ArrowUpRight(props: IconProps) {
   );
 }
 
-export function ArrowDown(props: IconProps) {
-  return (
-    <svg {...base(props)}>
-      <path d="M12 5v14m0 0l-6-6m6 6l6-6" />
-    </svg>
-  );
-}
-
 export function Mail(props: IconProps) {
   return (
     <svg {...base(props)}>
       <rect x="3" y="5" width="18" height="14" rx="2" />
       <path d="M3 7l9 6 9-6" />
-    </svg>
-  );
-}
-
-export function MapPin(props: IconProps) {
-  return (
-    <svg {...base(props)}>
-      <path d="M12 21s-7-5.1-7-11a7 7 0 1 1 14 0c0 5.9-7 11-7 11z" />
-      <circle cx="12" cy="10" r="2.5" />
-    </svg>
-  );
-}
-
-export function Menu(props: IconProps) {
-  return (
-    <svg {...base(props)}>
-      <path d="M4 7h16M4 12h16M4 17h16" />
-    </svg>
-  );
-}
-
-export function Close(props: IconProps) {
-  return (
-    <svg {...base(props)}>
-      <path d="M6 6l12 12M18 6L6 18" />
     </svg>
   );
 }
@@ -88,14 +55,6 @@ export function LinkedIn(props: IconProps) {
   );
 }
 
-export function XSocial(props: IconProps) {
-  return (
-    <svg {...base(props)} fill="currentColor" stroke="none">
-      <path d="M18.24 2.25h3.31l-7.23 8.26 8.5 11.24h-6.66l-5.21-6.82-5.97 6.82H1.66l7.73-8.84L1.25 2.25h6.83l4.71 6.23 5.45-6.23zm-1.16 17.52h1.83L7.08 4.13H5.12l11.96 15.64z" />
-    </svg>
-  );
-}
-
 export function Copy(props: IconProps) {
   return (
     <svg {...base(props)}>
@@ -109,14 +68,6 @@ export function Check(props: IconProps) {
   return (
     <svg {...base(props)}>
       <path d="M5 13l4 4L19 7" />
-    </svg>
-  );
-}
-
-export function ExternalLink(props: IconProps) {
-  return (
-    <svg {...base(props)}>
-      <path d="M14 4h6v6M20 4l-9 9M10 5H6a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2v-4" />
     </svg>
   );
 }

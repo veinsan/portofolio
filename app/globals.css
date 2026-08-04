@@ -1,280 +1,210 @@
 @import "tailwindcss";
 
 @theme inline {
-  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-  --font-display: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;
-  --font-mono: var(--font-jetbrains-mono), ui-monospace, monospace;
+  --font-sans: var(--font-bodoni), Georgia, serif;
+  --font-mono: var(--font-bodoni), Georgia, serif;
 }
 
-@theme {
-  /* Surfaces: no pure black (OLED smear, harsh contrast) */
-  --color-deep: #020203;
-  --color-base: #050506;
-  --color-elevated: #0a0a0c;
-  --color-fg: #ededef;
-  --color-muted: #9a9aa3;
-  /* 5.5:1 on base; the old #6b6b76 failed AA at 3.9:1 */
-  --color-faint: #84848f;
-  --color-line: rgba(255, 255, 255, 0.08);
-  --color-line-strong: rgba(255, 255, 255, 0.16);
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
 
-  /* Accent system: indigo core, cyan used sparingly in gradients */
-  --color-accent: #a5b4fc;
-  --color-accent-mid: #818cf8;
-  --color-accent-strong: #4f46e5;
-  --color-glow: #22d3ee;
-  --color-ok: #4ade80;
-
-  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-html {
-  scroll-behavior: smooth;
-  color-scheme: dark;
-}
-
-body {
-  background: linear-gradient(180deg, #0a0a0f 0%, var(--color-base) 24%, var(--color-deep) 100%);
-  background-attachment: fixed;
-  color: var(--color-fg);
-  font-family: var(--font-sans);
-  -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
-  overflow-x: hidden;
+  body {
+    overflow-x: clip;
+    background: #f4f1ea;
+    color: #171717;
+    font-family: var(--font-bodoni), Georgia, serif;
+    text-rendering: optimizeLegibility;
+  }
 }
 
 ::selection {
-  background: rgba(129, 140, 248, 0.35);
-  color: #ffffff;
+  background: #174fff;
+  color: white;
 }
 
-/* Visible focus for keyboard users, on-style */
 :focus-visible {
-  outline: 2px solid var(--color-accent-mid);
+  outline: 2px solid #174fff;
   outline-offset: 3px;
-  border-radius: 4px;
 }
 
-/* ---- Scroll reveal (driven by Reveal.tsx) ----
-   Content is visible by default; the entrance only applies once an inline
-   script tags <html> with .js, so JS-off and pre-hydration visitors read
-   a complete page. */
+@keyframes loader-leave {
+  to {
+    transform: translateY(-101%);
+  }
+}
+
+.opening-loader {
+  display: none;
+}
+
+html.js .opening-loader {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  background: #000;
+  pointer-events: none;
+  animation: loader-leave 1.2s cubic-bezier(0.87, 0, 0.13, 1) 0.7s both;
+}
+
+@keyframes rise-in {
+  from {
+    transform: translateY(115%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+html.js .load-wipe {
+  overflow: hidden;
+}
+
+html.js .load-wipe > * {
+  animation: rise-in 1.25s cubic-bezier(0.87, 0, 0.13, 1) both;
+  animation-delay: calc(1.9s + var(--enter-delay, 0ms));
+}
+
 html.js .reveal {
   opacity: 0;
-  transform: translateY(18px);
+  transform: translateY(1.25rem);
   transition:
-    opacity 0.5s var(--ease-out-expo),
-    transform 0.5s var(--ease-out-expo);
+    opacity 0.75s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.75s cubic-bezier(0.22, 1, 0.36, 1);
   transition-delay: var(--reveal-delay, 0ms);
 }
+
 html.js .reveal.is-visible {
   opacity: 1;
   transform: translateY(0);
 }
 
-/* ---- Hero load choreography (one-shot, above the fold) ---- */
-@keyframes hero-rise {
-  from {
-    opacity: 0;
-    transform: translateY(22px);
-    filter: blur(5px);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-    filter: blur(0);
-  }
-}
-html.js .hero-enter {
-  animation: hero-rise 0.8s var(--ease-out-expo) both;
-  animation-delay: var(--enter-delay, 0ms);
+html.js .wipe {
+  overflow: hidden;
 }
 
-@keyframes atmo-in {
-  from {
-    opacity: 0;
-  }
-}
-html.js .hero-atmo {
-  animation: atmo-in 1.4s var(--ease-out-expo) both;
+html.js .wipe > .wipe-i {
+  transform: translateY(115%);
+  transition: transform 1s cubic-bezier(0.87, 0, 0.13, 1);
+  transition-delay: var(--reveal-delay, 0ms);
 }
 
-@keyframes line-x {
-  from {
-    transform: scaleX(0);
-  }
-}
-html.js .hero-hairline {
-  transform-origin: left;
-  animation: line-x 0.9s var(--ease-out-expo) 0.55s both;
+html.js .wipe.is-visible > .wipe-i {
+  transform: translateY(0);
 }
 
-@keyframes nudge {
+@keyframes grain {
   0%,
   100% {
-    transform: translateY(0);
+    transform: translate(0, 0);
   }
-  50% {
-    transform: translateY(5px);
+  20% {
+    transform: translate(-12%, 4%);
   }
-}
-.animate-nudge {
-  animation: nudge 2.6s ease-in-out infinite;
-}
-
-/* ---- Timeline spine draws in when the section enters view ---- */
-html.js .timeline-draw {
-  transform: scaleY(0);
-  transform-origin: top;
-  transition: transform 0.8s var(--ease-out-expo) 80ms;
-}
-html.js ol:has(.reveal.is-visible) .timeline-draw {
-  transform: scaleY(1);
-}
-
-/* ---- Mobile menu entrance ---- */
-@keyframes menu-in {
-  from {
-    opacity: 0;
-    transform: translateY(-6px);
+  40% {
+    transform: translate(6%, -18%);
+  }
+  60% {
+    transform: translate(12%, 0);
+  }
+  80% {
+    transform: translate(3%, 22%);
   }
 }
-html.js .menu-in {
-  animation: menu-in 0.22s var(--ease-out-expo) both;
-}
 
-/* ---- Hero backdrop: faint blueprint grid, radially masked ---- */
-.hero-grid {
-  background-image:
-    linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
-  background-size: 56px 56px;
-  mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, black 30%, transparent 75%);
-}
-
-/* ---- Ambient glow blobs ---- */
-.glow-blob {
-  position: absolute;
-  border-radius: 9999px;
-  filter: blur(90px);
+body::after {
+  content: "";
+  position: fixed;
+  inset: -30%;
+  z-index: 90;
   pointer-events: none;
+  opacity: 0.025;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
+  animation: grain 0.5s steps(10) infinite;
 }
 
-@keyframes drift {
-  0%,
-  100% {
-    transform: translate(0, 0) scale(1);
-  }
-  50% {
-    transform: translate(40px, -30px) scale(1.08);
-  }
-}
-.animate-drift {
-  animation: drift 14s ease-in-out infinite;
-}
-.animate-drift-slow {
-  animation: drift 22s ease-in-out infinite reverse;
+.placeholder-art {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 1.25rem;
+  color: rgb(255 255 255 / 0.45);
+  background:
+    linear-gradient(135deg, rgb(255 255 255 / 0.08), transparent 48%),
+    repeating-linear-gradient(90deg, transparent 0 2.8rem, rgb(255 255 255 / 0.05) 2.8rem calc(2.8rem + 1px)),
+    repeating-linear-gradient(0deg, transparent 0 2.8rem, rgb(255 255 255 / 0.05) 2.8rem calc(2.8rem + 1px)),
+    #242424;
+  transition: transform 0.7s ease, opacity 0.7s ease;
 }
 
-@keyframes pulse-dot {
-  0%,
-  100% {
-    box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.5);
-  }
-  50% {
-    box-shadow: 0 0 0 5px rgba(74, 222, 128, 0);
-  }
-}
-.animate-pulse-dot {
-  animation: pulse-dot 2.4s ease-in-out infinite;
+.group:hover .placeholder-art {
+  transform: scale(1.04);
+  opacity: 0.78;
 }
 
-/* Animated underline for inline links (GPU: scaleX, not background-size) */
-.link-underline {
+.placeholder-art > span {
+  font-size: clamp(4rem, 8vw, 8rem);
+  font-weight: 600;
+  line-height: 0.8;
+  letter-spacing: -0.08em;
+}
+
+.placeholder-art > small {
+  font-size: 0.58rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  writing-mode: vertical-rl;
+}
+
+.project-placeholder {
   position: relative;
+  isolation: isolate;
+  background:
+    radial-gradient(circle at 72% 28%, rgb(23 79 255 / 0.3), transparent 18%),
+    linear-gradient(135deg, #252525, #0b0b0b);
 }
-.link-underline::after {
+
+.project-placeholder::before {
   content: "";
   position: absolute;
-  inset: auto 0 0 0;
-  height: 1px;
-  background: currentColor;
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 0.3s var(--ease-out-expo);
-}
-/* The underline span may sit inside a larger tap target; the parent
-   anchor's hover/focus drives it */
-.link-underline:focus-visible::after,
-a:focus-visible > .link-underline::after {
-  transform: scaleX(1);
-}
-@media (hover: hover) and (pointer: fine) {
-  .link-underline:hover::after,
-  a:hover > .link-underline::after {
-    transform: scaleX(1);
-  }
+  inset: 0;
+  z-index: -1;
+  opacity: 0.3;
+  background-image:
+    linear-gradient(rgb(255 255 255 / 0.12) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(255 255 255 / 0.12) 1px, transparent 1px);
+  background-size: 3rem 3rem;
+  mask-image: linear-gradient(to bottom right, black, transparent 80%);
 }
 
-/* Horizontal tab rail: fade the clipped edge while more tabs exist
-   (attribute toggled from scroll position in ProjectShowcase) */
-[data-fade-end="true"] {
-  mask-image: linear-gradient(90deg, #000 calc(100% - 56px), transparent);
-}
-
-/* ---- Project showcase panel transition (replayed via React key) ---- */
-@keyframes showcase-in {
+@keyframes tech-marquee {
   from {
-    opacity: 0;
-    transform: translateY(10px);
+    transform: translate3d(0, 0, 0);
   }
   to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-.showcase-enter {
-  animation: showcase-in 0.25s var(--ease-out-expo);
-}
-
-/* Preview image settles from a slight zoom on each selection */
-@keyframes img-settle {
-  from {
-    transform: scale(1.035);
-  }
-}
-html.js .showcase-enter img {
-  animation: img-settle 0.35s var(--ease-out-expo) both;
-}
-
-/* Glass card */
-.card {
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid var(--color-line);
-  border-radius: 16px;
-  transition:
-    border-color 0.25s var(--ease-out-expo),
-    transform 0.25s var(--ease-out-expo),
-    box-shadow 0.25s var(--ease-out-expo),
-    background-color 0.25s var(--ease-out-expo);
-}
-/* Gated: touch devices fire sticky hovers on tap */
-@media (hover: hover) and (pointer: fine) {
-  .card:hover {
-    background: rgba(255, 255, 255, 0.05);
-    border-color: var(--color-line-strong);
-    transform: translateY(-3px);
-    box-shadow:
-      0 12px 40px -12px rgba(79, 70, 229, 0.25),
-      0 0 0 1px rgba(129, 140, 248, 0.08);
+    transform: translate3d(-50%, 0, 0);
   }
 }
 
-/* Reduced motion: gentler, not zero. Comprehension-aiding opacity fades
-   stay; all movement (translate, scale, drift, draw) is removed. */
-@keyframes fade-in-only {
-  from {
-    opacity: 0;
+.tech-marquee {
+  animation: tech-marquee 36s linear infinite;
+}
+
+.tech-marquee:hover {
+  animation-play-state: paused;
+}
+
+@media (max-width: 767px) and (orientation: landscape) {
+  .hero-title {
+    top: 58svh;
+    font-size: clamp(1.9rem, 8vmin, 3rem);
+    line-height: 0.94;
+    letter-spacing: -0.025em;
   }
 }
 
@@ -282,36 +212,32 @@ html.js .showcase-enter img {
   html {
     scroll-behavior: auto;
   }
-  html.js .reveal {
-    transform: none;
-    transition: opacity 0.2s ease;
-    transition-delay: 0ms;
+
+  html.js .opening-loader {
+    display: none;
   }
-  html.js .hero-enter {
-    animation: fade-in-only 0.3s ease both;
+
+  html.js .load-wipe {
+    overflow: visible;
   }
-  html.js .menu-in {
-    animation: fade-in-only 0.15s ease both;
-  }
-  .showcase-enter {
-    animation: fade-in-only 0.2s ease;
-  }
-  .animate-drift,
-  .animate-drift-slow,
-  .animate-pulse-dot,
-  .animate-nudge {
+
+  html.js .load-wipe > * {
     animation: none;
   }
-  html.js .hero-atmo,
-  html.js .hero-hairline,
-  html.js .showcase-enter img {
-    animation: none;
-  }
-  html.js .timeline-draw {
+
+  html.js .reveal,
+  html.js .wipe > .wipe-i {
+    opacity: 1;
     transform: none;
     transition: none;
   }
-  .card:hover {
-    transform: none;
+
+  html.js .wipe {
+    overflow: visible;
+  }
+
+  .tech-marquee,
+  body::after {
+    animation: none;
   }
 }

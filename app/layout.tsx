@@ -1,33 +1,33 @@
-import type { Metadata } from "next";
-import { Inter, JetBrains_Mono, Space_Grotesk } from "next/font/google";
+import type { Metadata, Viewport } from "next";
+import { Bodoni_Moda } from "next/font/google";
 import { site } from "@/lib/data";
 import "./globals.css";
 
-const inter = Inter({
-  variable: "--font-inter",
+const bodoni = Bodoni_Moda({
+  variable: "--font-bodoni",
   subsets: ["latin"],
-  display: "swap",
-});
-
-const spaceGrotesk = Space_Grotesk({
-  variable: "--font-space-grotesk",
-  subsets: ["latin"],
-  display: "swap",
-});
-
-const jetbrainsMono = JetBrains_Mono({
-  variable: "--font-jetbrains-mono",
-  subsets: ["latin"],
-  weight: ["400", "500"],
   display: "swap",
 });
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
-  title: `${site.name} · ${site.role}`,
+  title: `${site.name} — ${site.role}`,
   description: site.tagline,
+  keywords: [
+    site.name,
+    "Data Science",
+    "AI Engineer",
+    "Machine Learning",
+    "Next.js",
+    "PyTorch",
+    "Institut Teknologi Bandung",
+    "Portfolio",
+  ],
+  authors: [{ name: site.name, url: site.url }],
+  creator: site.name,
+  alternates: { canonical: site.url },
   openGraph: {
-    title: `${site.name} · ${site.role}`,
+    title: `${site.name} — ${site.role}`,
     description: site.tagline,
     url: site.url,
     siteName: site.name,
@@ -35,10 +35,16 @@ export const metadata: Metadata = {
     locale: "en_US",
   },
   twitter: {
-    card: "summary_large_image",
-    title: `${site.name} · ${site.role}`,
+    card: "summary",
+    title: `${site.name} — ${site.role}`,
     description: site.tagline,
   },
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  themeColor: "#f4f1ea",
 };
 
 export default function RootLayout({
@@ -47,14 +53,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="en"
-      className={`${inter.variable} ${spaceGrotesk.variable} ${jetbrainsMono.variable}`}
-    >
-      <body>
-        {/* Tags <html> before first paint so CSS only gates content behind
-            animations when JS is actually running; no-JS visitors get a
-            fully visible page. */}
+    <html lang="en" className={bodoni.variable}>
+      <body className="bg-[#f4f1ea] font-sans antialiased">
         <script
           dangerouslySetInnerHTML={{
             __html: "document.documentElement.classList.add('js')",
@@ -62,7 +62,7 @@ export default function RootLayout({
         />
         <a
           href="#main"
-          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-100 focus:rounded-full focus:bg-accent-strong focus:px-5 focus:py-3 focus:text-sm focus:font-semibold focus:text-white"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[110] focus:bg-[#171717] focus:px-5 focus:py-3 focus:text-sm focus:font-semibold focus:text-white"
         >
           Skip to main content
         </a>

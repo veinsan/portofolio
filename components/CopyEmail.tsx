@@ -46,9 +46,9 @@ export default function CopyEmail({ email }: { email: string }) {
     <button
       type="button"
       onClick={copy}
-      className="inline-flex min-h-12 cursor-pointer items-center gap-2 rounded-full border border-line-strong px-6 py-3 text-sm font-medium text-fg transition duration-150 hover:border-accent-mid hover:text-accent active:scale-[0.98]"
+      className="inline-flex min-h-14 w-full cursor-pointer items-center justify-center gap-3 rounded-full border border-rule-strong bg-paper px-7 text-[0.9rem] font-semibold text-ink shadow-[inset_0_1px_0_#fff,0_16px_36px_rgba(0,0,0,0.07)] transition duration-300 ease-out-quint hover:-translate-y-1 hover:border-ink active:translate-y-0 sm:w-auto sm:text-base"
     >
-      {copied ? <Check size={16} className="text-ok" /> : <Copy size={16} />}
+      {copied ? <Check size={18} className="text-accent" /> : <Copy size={18} />}
       {copied ? "Copied" : "Copy email"}
       <span aria-live="polite" className="sr-only">
         {copied ? "Email address copied to clipboard" : ""}
