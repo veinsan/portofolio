@@ -106,7 +106,7 @@ function WorkCard({ project, lead = false }: { project: Project; lead?: boolean 
           className={
             lead
               ? "relative flex flex-col justify-end bg-[#f7f6f2] p-5 md:p-7 lg:col-span-5 lg:p-[3vw]"
-              : "relative flex flex-col justify-end bg-[#f7f6f2] p-5 transition duration-500 md:absolute md:inset-0 md:translate-y-4 md:bg-[#f7f6f2]/88 md:opacity-0 md:group-hover:translate-y-0 md:group-hover:opacity-100 md:group-focus-visible:translate-y-0 md:group-focus-visible:opacity-100"
+              : "relative flex flex-col justify-end bg-[#f7f6f2] p-5"
           }
         >
           <span className="text-sm uppercase tracking-[0.16em] text-[#6b665d]">

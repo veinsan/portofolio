@@ -32,7 +32,7 @@ export default function Hero() {
       </div>
 
       <h1
-        className="hero-title absolute left-5 right-5 top-[60svh] -translate-y-1/2 text-left text-5xl font-semibold uppercase leading-[.88] tracking-[-0.045em] text-[#111] md:bottom-[3vw] md:left-[2.4vw] md:right-[2.4vw] md:top-auto md:translate-y-0 md:text-[10vw] md:leading-[.82] md:tracking-[-0.075em]"
+        className="hero-title absolute left-5 right-5 top-[60svh] -translate-y-1/2 text-left text-[clamp(2.25rem,11.5vw,3rem)] font-semibold uppercase leading-[.88] tracking-[-0.045em] text-[#111] md:bottom-[3vw] md:left-[2.4vw] md:right-[2.4vw] md:top-auto md:translate-y-0 md:text-[10vw] md:leading-[.82] md:tracking-[-0.075em]"
         aria-label="Engineering Intelligence"
       >
         <span className="load-wipe block">
