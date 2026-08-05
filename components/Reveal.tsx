@@ -53,7 +53,16 @@ export default function Reveal({
   if (variant === "wipe") {
     return (
       <Tag ref={ref} className={`wipe ${className}`} style={style}>
-        <div className="wipe-i">{children}</div>
+        <div
+          className="wipe-i"
+          onTransitionEnd={(event) => {
+            if (event.target === event.currentTarget && event.propertyName === "transform") {
+              ref.current?.classList.add("is-revealed");
+            }
+          }}
+        >
+          {children}
+        </div>
       </Tag>
     );
   }

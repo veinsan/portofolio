@@ -32,15 +32,16 @@ export default function Domain() {
         ))}
       </div>
 
-      <div className="mt-12 border-y border-[#171717]/10 bg-[#f7f6f2]" aria-label="Technical skills">
+      <div className="mt-12 border-y border-[#171717]/10 bg-[#f7f6f2]">
         <div className="relative overflow-hidden py-5">
           <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-20 bg-gradient-to-r from-[#f7f6f2] to-transparent" />
           <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-20 bg-gradient-to-l from-[#f7f6f2] to-transparent" />
-          <ul className="tech-marquee flex w-max items-center gap-12">
+          <ul className="tech-marquee flex w-max items-center gap-12" aria-label="Technical skills">
             {loopSkills.map((skill, index) => (
               <li
                 className="flex shrink-0 items-center gap-3 text-base font-medium text-[#565149]"
                 key={`${skill}-${index}`}
+                aria-hidden={index >= skills.length}
               >
                 <span className="h-2 w-2 bg-[#174fff]" aria-hidden="true" />
                 <span>{skill}</span>

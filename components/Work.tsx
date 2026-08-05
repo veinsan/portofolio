@@ -38,7 +38,7 @@ export default function Work() {
         </Reveal>
       )}
 
-      <div className="mt-5 grid gap-5 lg:grid-cols-2">
+      <div className="mt-5 grid grid-cols-1 gap-5 lg:grid-cols-2">
         {supportingProjects.map((project, index) => (
           <Reveal
             variant="wipe"
@@ -82,7 +82,7 @@ function WorkCard({ project, lead = false }: { project: Project; lead?: boolean 
       target="_blank"
       rel="noreferrer"
     >
-      <div className={lead ? "grid lg:grid-cols-12" : "relative overflow-hidden"}>
+      <div className={lead ? "grid grid-cols-1 lg:grid-cols-12" : "relative overflow-hidden"}>
         <div
           className={lead ? "relative overflow-hidden lg:col-span-7" : "relative overflow-hidden"}
         >

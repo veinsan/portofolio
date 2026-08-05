@@ -48,6 +48,8 @@ assets-src/
 # AI / agent files
 .claude/
 .impeccable/
+.agents/
+.codex/
 AGENTS.md
 CLAUDE.md
 PRODUCT.md
