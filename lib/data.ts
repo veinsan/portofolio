@@ -31,18 +31,42 @@ export const principles = [
   {
     title: "Validate forward, not backward.",
     text: "Forward-chaining evaluation and leak-free splits keep forecasting and classification results honest.",
+    media: {
+      src: "/principles/validate-forward.webp",
+      alt: "Forecast analysis dashboard showing model comparisons and seven-day demand projections.",
+      fit: "contain",
+      position: "center",
+    },
   },
   {
     title: "Make models earn their place.",
     text: "Architecture choices are tied to leaderboard scores, error metrics, and clear attribution rather than novelty alone.",
+    media: {
+      src: "/principles/models-earn-their-place.webp",
+      alt: "Blue-lit computer processor mounted on a circuit board.",
+      fit: "contain",
+      position: "center",
+    },
   },
   {
     title: "Ship beyond the notebook.",
     text: "APIs, authentication, databases, and deployment turn experiments into products that can survive real use.",
+    media: {
+      src: "/principles/ship-beyond-notebook.webp",
+      alt: "Infrastructure health dashboard beside server racks and a cloud diagram.",
+      fit: "contain",
+      position: "center",
+    },
   },
   {
     title: "Lead the work around the work.",
     text: "Technical delivery sits alongside sponsorship, creative, public-relations, mentoring, and field leadership at ITB.",
+    media: {
+      src: "/principles/lead-the-work.webp",
+      alt: "Presenter leading a technical workshop for participants using laptops.",
+      fit: "cover",
+      position: "46% center",
+    },
   },
 ];
 
@@ -73,6 +97,12 @@ export type Project = {
   metrics?: string;
   badge?: string;
   repoUrl: string;
+  media?: {
+    src: string;
+    alt: string;
+    fit: "cover" | "contain";
+    position: string;
+  };
 };
 
 export const projects: Project[] = [
@@ -85,6 +115,12 @@ export const projects: Project[] = [
     techStack: ["Slack API", "Supabase", "Typeform"],
     badge: "Finalist — Autopilot Asia Hackathon 2026",
     repoUrl: "https://github.com/veinsan/autopilot-round2",
+    media: {
+      src: "/projects/hr-retention-command-center/cover.webp",
+      alt: "Autopilot Asia Hackathon page with Kuala Lumpur finals details.",
+      fit: "contain",
+      position: "center",
+    },
   },
   {
     id: "bengawan-solo",
@@ -96,6 +132,12 @@ export const projects: Project[] = [
     metrics: "1.41971 private RMSE",
     badge: "Finalist — SSDS 2026",
     repoUrl: "https://github.com/veinsan/bengawan-solo-river-water-level-forecasting",
+    media: {
+      src: "/projects/bengawan-solo-forecasting/cover.webp",
+      alt: "SSDS competition cover for the Bengawan Solo forecasting project.",
+      fit: "cover",
+      position: "center",
+    },
   },
   {
     id: "traffic-speed",
@@ -129,6 +171,12 @@ export const projects: Project[] = [
     metrics: "0.982 private leaderboard score",
     badge: "Finalist — DAC FindIT! 2026",
     repoUrl: "https://github.com/veinsan/face-anti-spoofing-dinov2-convnext",
+    media: {
+      src: "/projects/face-anti-spoofing/cover.webp",
+      alt: "Presentation cover for the Face Anti-Spoofing project at FindIT! 2026.",
+      fit: "cover",
+      position: "center",
+    },
   },
   {
     id: "waste-classification",
@@ -192,6 +240,12 @@ export const projects: Project[] = [
     techStack: ["Next.js 16", "TypeScript", "Prisma", "PostgreSQL"],
     metrics: "Deployed to production",
     repoUrl: "https://github.com/veinsan/belajarduludek",
+    media: {
+      src: "/projects/belajarduludek/cover.webp",
+      alt: "BelajarDuluDek landing page with its study workspace and learning tools.",
+      fit: "cover",
+      position: "center",
+    },
   },
   {
     id: "deardiary",
@@ -242,32 +296,32 @@ export const experienceEntries: ExperienceEntry[] = [
 ];
 
 export const skills = [
-  "Python",
-  "TypeScript",
-  "JavaScript",
-  "C",
-  "Java",
-  "SQL",
-  "PyTorch",
-  "LightGBM",
-  "XGBoost",
-  "CatBoost",
-  "Transformers",
-  "timm",
-  "SHAP",
-  "YOLO",
-  "scikit-learn",
-  "Pandas",
-  "NumPy",
-  "React",
-  "Next.js",
-  "Tailwind CSS",
-  "Framer Motion",
-  "Django",
-  "FastAPI",
-  "PostgreSQL",
-  "Prisma ORM",
-  "Supabase",
-  "Docker",
-  "Git",
+  { name: "Python", logo: "/logos/skills/python.svg" },
+  { name: "TypeScript", logo: "/logos/skills/typescript.svg" },
+  { name: "JavaScript", logo: "/logos/skills/javascript.svg" },
+  { name: "C", logo: "/logos/skills/c.svg" },
+  { name: "Java", logo: "/logos/skills/java.svg" },
+  { name: "SQL" },
+  { name: "PyTorch", logo: "/logos/skills/pytorch.svg" },
+  { name: "LightGBM", logo: "/logos/skills/lightgbm.svg" },
+  { name: "XGBoost", logo: "/logos/skills/xgboost.svg" },
+  { name: "CatBoost", logo: "/logos/skills/catboost.svg" },
+  { name: "Transformers", logo: "/logos/skills/huggingface.svg" },
+  { name: "timm", logo: "/logos/skills/huggingface.svg" },
+  { name: "SHAP" },
+  { name: "YOLO", logo: "/logos/skills/yolo.svg" },
+  { name: "scikit-learn", logo: "/logos/skills/scikit-learn.svg" },
+  { name: "Pandas", logo: "/logos/skills/pandas.svg" },
+  { name: "NumPy", logo: "/logos/skills/numpy.svg" },
+  { name: "React", logo: "/logos/skills/react.svg" },
+  { name: "Next.js", logo: "/logos/skills/nextjs.svg" },
+  { name: "Tailwind CSS", logo: "/logos/skills/tailwindcss.svg" },
+  { name: "Framer Motion", logo: "/logos/skills/framer-motion.svg" },
+  { name: "Django", logo: "/logos/skills/django.svg" },
+  { name: "FastAPI", logo: "/logos/skills/fastapi.svg" },
+  { name: "PostgreSQL", logo: "/logos/skills/postgresql.svg" },
+  { name: "Prisma ORM", logo: "/logos/skills/prisma.svg" },
+  { name: "Supabase", logo: "/logos/skills/supabase.svg" },
+  { name: "Docker", logo: "/logos/skills/docker.svg" },
+  { name: "Git", logo: "/logos/skills/git.svg" },
 ];

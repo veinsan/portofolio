@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 import Reveal from "@/components/Reveal";
 import SectionHeading from "@/components/SectionHeading";
 import { domains, skills } from "@/lib/data";
@@ -40,11 +42,24 @@ export default function Domain() {
             {loopSkills.map((skill, index) => (
               <li
                 className="flex shrink-0 items-center gap-3 text-base font-medium text-[#565149]"
-                key={`${skill}-${index}`}
+                key={`${skill.name}-${index}`}
                 aria-hidden={index >= skills.length}
               >
-                <span className="h-2 w-2 bg-[#174fff]" aria-hidden="true" />
-                <span>{skill}</span>
+                <span className="grid size-5 shrink-0 place-items-center" aria-hidden="true">
+                  {skill.logo ? (
+                    <Image
+                      className="size-5 object-contain"
+                      src={skill.logo}
+                      width={20}
+                      height={20}
+                      alt=""
+                      loading="eager"
+                    />
+                  ) : (
+                    <span className="h-2 w-2 bg-[#174fff]" />
+                  )}
+                </span>
+                <span>{skill.name}</span>
               </li>
             ))}
           </ul>

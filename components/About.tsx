@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 import Reveal from "@/components/Reveal";
 import SectionHeading from "@/components/SectionHeading";
 import { about, principles } from "@/lib/data";
@@ -24,9 +26,15 @@ export default function About() {
         {principles.map((principle, index) => (
           <Reveal variant="wipe" delay={index * 90} key={principle.title}>
             <article className="group relative min-h-[22rem] overflow-hidden bg-[#171717] text-[#f4f1ea] sm:min-h-[28rem]">
-              <div className="placeholder-art absolute inset-0" aria-hidden="true">
-                <span>{String(index + 1).padStart(2, "0")}</span>
-                <small>Image placeholder</small>
+              <div className="principle-media absolute inset-0">
+                <Image
+                  className={principle.media.fit === "cover" ? "object-cover" : "object-contain"}
+                  src={principle.media.src}
+                  alt={principle.media.alt}
+                  fill
+                  sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
+                  style={{ objectPosition: principle.media.position }}
+                />
               </div>
               <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/18 to-transparent" />
               <div className="absolute inset-x-0 bottom-0 p-5">

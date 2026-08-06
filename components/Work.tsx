@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 import Reveal from "@/components/Reveal";
 import SectionHeading from "@/components/SectionHeading";
 import { ArrowUpRight } from "@/components/icons";
@@ -83,23 +85,38 @@ function WorkCard({ project, lead = false }: { project: Project; lead?: boolean 
       rel="noreferrer"
     >
       <div className={lead ? "grid grid-cols-1 lg:grid-cols-12" : "relative overflow-hidden"}>
-        <div
-          className={lead ? "relative overflow-hidden lg:col-span-7" : "relative overflow-hidden"}
-        >
-          <div className="project-placeholder grid aspect-[16/9] place-items-center bg-[#111] text-[#f4f1ea] transition duration-700 md:group-hover:scale-[1.04] md:group-focus-visible:scale-[1.04]">
-            <span
-              className={
-                lead
-                  ? "text-[22vw] font-semibold uppercase leading-none tracking-[-0.08em] md:text-[12vw] lg:text-[8vw]"
-                  : "text-[18vw] font-semibold uppercase leading-none tracking-[-0.08em] md:text-[8vw]"
-              }
-            >
-              {project.title.slice(0, 2)}
-            </span>
-            <small className="absolute bottom-4 left-5 font-mono text-[0.62rem] uppercase tracking-[0.18em] text-white/55">
-              Project image placeholder
-            </small>
-          </div>
+        <div className={lead ? "relative overflow-hidden lg:col-span-7" : "relative overflow-hidden"}>
+          {project.media ? (
+            <div className="relative aspect-[16/9] bg-[#111] transition duration-700 md:group-hover:scale-[1.04] md:group-focus-visible:scale-[1.04]">
+              <Image
+                className={project.media.fit === "cover" ? "object-cover" : "object-contain"}
+                src={project.media.src}
+                alt={project.media.alt}
+                fill
+                sizes={
+                  lead
+                    ? "(min-width: 1024px) 58vw, 100vw"
+                    : "(min-width: 1024px) 50vw, 100vw"
+                }
+                style={{ objectPosition: project.media.position }}
+              />
+            </div>
+          ) : (
+            <div className="project-placeholder grid aspect-[16/9] place-items-center bg-[#111] text-[#f4f1ea] transition duration-700 md:group-hover:scale-[1.04] md:group-focus-visible:scale-[1.04]">
+              <span
+                className={
+                  lead
+                    ? "text-[22vw] font-semibold uppercase leading-none tracking-[-0.08em] md:text-[12vw] lg:text-[8vw]"
+                    : "text-[18vw] font-semibold uppercase leading-none tracking-[-0.08em] md:text-[8vw]"
+                }
+              >
+                {project.title.slice(0, 2)}
+              </span>
+              <small className="absolute bottom-4 left-5 font-mono text-[0.62rem] uppercase tracking-[0.18em] text-white/55">
+                Project image placeholder
+              </small>
+            </div>
+          )}
         </div>
 
         <div
