@@ -3,6 +3,7 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   // Fully static site; deploy the `out/` folder anywhere (Netlify, GitHub Pages, S3, Vercel).
   output: "export",
+  trailingSlash: true,
   // Static export has no image optimizer; serve /public images as-is.
   images: { unoptimized: true },
   // Native file events are unreliable on the WSL-mounted Windows filesystem.

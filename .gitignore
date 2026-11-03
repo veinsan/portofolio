@@ -59,3 +59,6 @@ PRODUCT.legacy.md
 
 # docs
 cv.md
+# local screenshots, personal documents
+.shots/
+*.docx

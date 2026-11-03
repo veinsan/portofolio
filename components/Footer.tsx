@@ -1,13 +1,33 @@
-import { site } from "@/lib/data";
+import Link from "next/link";
+import { nav, site } from "@/lib/data";
 
+// Vantra footer: big mark left, large nav rows right, about line, secondary links, bottom bar.
 export default function Footer() {
   return (
-    <footer className="bg-paper-4 px-5 pb-10 md:px-[2.4vw] md:pb-[3vw]">
-      <div className="flex flex-col gap-2 border-t border-ink pt-5 font-mono text-[0.7rem] tracking-[0.1em] text-ink-2 uppercase sm:flex-row sm:items-baseline sm:justify-between sm:text-xs">
-        <p>
-          © {new Date().getFullYear()} {site.name}
+    <footer className="foot">
+      <div className="foot__top">
+        <p className="foot__mark" aria-hidden="true">RP</p>
+        <ul className="foot__nav">
+          <li><Link prefetch={false} href="/">Home</Link></li>
+          {nav.map((n) => (
+            <li key={n.href}><a href={`/${n.href}`}>{n.label}</a></li>
+          ))}
+        </ul>
+      </div>
+      <div className="foot__mid">
+        <p className="foot__about">
+          {site.name} is an AI and ML engineer and Information Systems and Technology student at ITB,
+          working on computer vision, tabular ML and the backends that serve them.
         </p>
-        <p>Designed and built by {site.name}. Fast by default.</p>
+        <ul className="foot__links">
+          <li><a className="utility" href={site.github} target="_blank" rel="noopener noreferrer">GitHub</a></li>
+          <li><a className="utility" href={site.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
+          <li><a className="utility" href={`mailto:${site.email}`}>Email</a></li>
+        </ul>
+      </div>
+      <div className="foot__bar">
+        <p>© 2026 {site.name}. Set in Inter and Instrument Sans.</p>
+        <p>{site.location}</p>
       </div>
     </footer>
   );

@@ -82,13 +82,12 @@ Use the existing project images under:
 
 `public/projects/`
 
-Add them to the five featured projects:
+Add them to the four featured projects:
 
 1. HR Retention Command Center
-2. Bengawan Solo Forecasting
-3. Face Anti-Spoofing
-4. Waste Material Classification
-5. BelajarDuluDek
+2. Face Anti-Spoofing
+3. Waste Material Classification
+4. BelajarDuluDek
 
 ### Asset mapping
 
