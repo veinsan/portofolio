@@ -94,7 +94,7 @@ export default function Home() {
       <section className="sec moments pan" aria-labelledby="mom-h" data-hpan>
         <div className="head">
           <h2 id="mom-h" className="h2" data-split="lines">Moments<br />from the road.</h2>
-          <p className="label-meta mono"><span className="paren">( Photos )</span><br />Keep scrolling</p>
+          <p className="label-meta mono"><span className="paren">( Photos )</span><br />Scroll to slide →</p>
         </div>
         <ul className="moments__track" data-hpan-track aria-label="Competition moments">
           {moments.map((m, i) => (

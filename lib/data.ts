@@ -14,8 +14,8 @@ export const site = {
   description:
     "AI and software engineer, data analyst and scientist at ITB. Computer vision and tabular ML, 4× data science competition winner in 2026.",
   headline: "4× Data Science Competition Winner",
-  /** Portrait crop for small frames, landscape for the wide frame. Replace the files to change the photo. */
-  photo: { portrait: "/photo/riantama.jpg", wide: "/photo/riantama-wide.jpg" },
+  /** Hero portrait (4:5). Replace the file to change the photo. */
+  photo: { portrait: "/photo/riantama.jpg" },
   /** Put a PDF in public/ (e.g. "/cv.pdf") and the Download CV buttons appear. */
   cvUrl: "",
 };
@@ -500,12 +500,13 @@ export const skills = [
 
 /** The photo strip. Add `src` (an image in public/) to replace a placeholder frame. */
 export const moments: { caption: string; src?: string }[] = [
-  { caption: "1st Place, INFEST XII 2026" },
-  { caption: "1st Place, Big Data Competition 2026" },
-  { caption: "2nd Place, DATASCAPE 2026" },
-  { caption: "3rd Place, DAC PRS ITS 2026" },
-  { caption: "Grand Finalist, AutoPilot Asia, Kuala Lumpur" },
-  { caption: "COMPFEST 18 Academy, Best Case Study Team" },
+  { caption: "1st Place, INFEST XII 2026", src: "/photo/infest.jpg" },
+  { caption: "1st Place, Big Data Competition 2026", src: "/photo/big-data.jpg" },
+  { caption: "2nd Place, DATASCAPE 2026", src: "/photo/datascape.jpg" },
+  { caption: "3rd Place, DAC PRS ITS 2026", src: "/photo/dac-prs-its.jpg" },
+  { caption: "1st Honorable Mention, HOLOGY 9.0", src: "/photo/hology.jpg" },
+  { caption: "Grand Finalist, AutoPilot Asia, Kuala Lumpur", src: "/photo/autopilot.jpg" },
+  { caption: "COMPFEST 18 Academy, Best Case Study Team", src: "/photo/compfest.jpg" },
 ];
 
 /** From LinkedIn, Nov 2026. */

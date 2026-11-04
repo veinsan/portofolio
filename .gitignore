@@ -62,3 +62,6 @@ cv.md
 # local screenshots, personal documents
 .shots/
 *.docx
+
+# personal notes
+RANGKUMAN.md
