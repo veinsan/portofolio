@@ -1,14 +1,16 @@
+import Image from "next/image";
 import Btn from "@/components/Btn";
 import Glow from "@/components/Glow";
 import Portrait from "@/components/Portrait";
-import { education, experience, faq, numbers, practices, projects, site } from "@/lib/data";
+import { education, experience, faq, moments, numbers, organizations, practices, projects, site, skills } from "@/lib/data";
 
 const placed = projects.filter((p) => !p.archive);
 const featured = placed.filter((p) => p.featured);
-const archive = projects.filter((p) => p.archive);
+const others = projects.filter((p) => p.archive);
 const events = [...new Set(placed.map((p) => p.event!))];
 const wins = placed.filter((p) => /^(1st|2nd|3rd) Place/.test(p.place ?? ""));
 const active = experience.filter((e) => e.now).length;
+const extraSkills = skills.filter((g) => g.group === "Languages" || g.group === "Frontend and tools");
 
 // Degree progress, computed at build time. shortcut: freezes at the last deploy, rebuild each semester.
 const start = Date.parse(education.start), end = Date.parse(education.end);
@@ -27,35 +29,58 @@ const Arrow = () => (
 export default function Home() {
   return (
     <>
-      {/* Hero: full-bleed card, display headline bottom-left, status card bottom-right. */}
+      {/* Hero: Vantra's dark card, Jason's identity-first split */}
       <section id="top" className="hero" aria-labelledby="hero-h">
         <div className="hero__card">
           <Glow seed="riantama" live band={0.3} parallax={0.1} className="hero__bg" />
           <div className="hero__copy">
-            <p className="hero__kicker">{site.headline}</p>
+            <p className="hero__kicker mono">( {site.headline} )</p>
             <h1 id="hero-h" className="hero__title">
               <span className="sr-only">{site.name}, </span>
-              <span className="hero__line" data-split="lines" data-intro>AI &amp; ML</span>
-              <span className="hero__line" data-split="lines" data-intro data-delay="0.08">Engineer</span>
+              <span className="hero__line" data-split="lines" data-intro>AI and Software Engineer</span>
+              <span className="hero__line hero__line--alt" data-split="lines" data-intro data-delay="0.08">Data Analyst and Scientist</span>
             </h1>
+            <p className="hero__tag" data-split="lines" data-intro data-delay="0.16">Building models that hold up on data they haven’t seen.</p>
+            <p className="hero__bio">Information Systems and Technology at ITB, class of 2028. Computer vision, tabular ML and the backends that serve them.</p>
+            <div className="hero__actions">
+              <Btn href={`mailto:${site.email}`}>Email me</Btn>
+              {site.cvUrl && <Btn href={site.cvUrl} tone="dark" external>Download CV</Btn>}
+              <Btn href={site.github} tone="dark" external>GitHub</Btn>
+              <Btn href={site.linkedin} tone="dark" external>LinkedIn</Btn>
+            </div>
           </div>
-          <a className="status" href="#now">
-            <span className="status__body">
-              <span className="status__label">Right now</span>
+          <div className="hero__side">
+            <Portrait src={site.photo.portrait} className="hero__photo" sizes="(min-width: 900px) 32vw, 100vw" priority />
+            <a className="status" href="#now">
+              <span className="status__label mono">Right now</span>
               <span className="status__value">AI Lab Assistant at STEI ITB. Open to internships.</span>
-            </span>
-            <Portrait src={site.photo.portrait} className="status__photo" sizes="10rem" priority />
-          </a>
+            </a>
+          </div>
         </div>
       </section>
 
-      {/* Statement + event strip */}
-      <section className="statement" aria-label="Introduction">
-        <p className="statement__text" data-ink>
-          I’m Riantama, an AI and ML engineer studying Information Systems and Technology at ITB. I
-          build vision models, tabular ML and the systems that keep them reliable. In 2026 that work
-          won four data science competitions, two of them in first place.
-        </p>
+      {/* About: Jason's named statement + facts, Vantra's strip */}
+      <section id="about" className="sec about" aria-labelledby="about-h">
+        <p className="label mono">( About )</p>
+        <div className="about__grid">
+          <h2 id="about-h" className="about__title" data-split="lines">{`${site.name}, building models that hold up.`}</h2>
+          <div className="about__copy">
+            <p data-ink>
+              I’m an AI and software engineer and data scientist studying Information Systems and Technology at ITB. Most of my
+              work starts on a leaderboard: vision models on DINOv3, gradient-boosted ensembles on messy
+              tables, and the validation that keeps a private score honest.
+            </p>
+            <p>
+              The other half is getting models out of the notebook. I lead a backend team on an internal
+              ERP, assist in ITB’s AI Laboratory, and I am exploring agentic AI next.
+            </p>
+            <ul className="facts">
+              {numbers.map((n) => (
+                <li key={n.label}><b>{n.value}</b><span className="mono">{n.label}</span></li>
+              ))}
+            </ul>
+          </div>
+        </div>
         <div className="strip" aria-label="2026 competitions">
           <ul className="strip__track" data-marquee>
             {[...events, ...events].map((e, i) => (
@@ -65,11 +90,36 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Work: 2x2 cards with a glass panel that opens on hover */}
+      {/* Moments: Jason's captioned photo strip, placeholders until photos arrive */}
+      <section className="sec moments pan" aria-labelledby="mom-h" data-hpan>
+        <div className="head">
+          <h2 id="mom-h" className="h2" data-split="lines">Moments<br />from the road.</h2>
+          <p className="label-meta mono"><span className="paren">( Photos )</span><br />Keep scrolling</p>
+        </div>
+        <ul className="moments__track" data-hpan-track aria-label="Competition moments">
+          {moments.map((m, i) => (
+            <li className="moment" key={m.caption}>
+              <figure>
+                {m.src ? (
+                  <Image src={m.src} alt={m.caption} fill sizes="(min-width: 768px) 30vw, 80vw" style={{ objectFit: "cover" }} />
+                ) : (
+                  <div className="portrait__ph moment__ph" role="img" aria-label={`${m.caption} (photo placeholder)`}>
+                    <span>{String(i + 1).padStart(2, "0")}</span>
+                    <small>Photo placeholder</small>
+                  </div>
+                )}
+                <figcaption className="moment__cap mono">{m.caption}</figcaption>
+              </figure>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      {/* Work that won: Vantra's 2x2 */}
       <section id="work" className="sec" aria-labelledby="work-h">
         <div className="head">
           <h2 id="work-h" className="h2" data-split="lines">Work<br />that won.</h2>
-          <p className="label-meta"><span className="paren">( Winners )</span><br />Vision, tabular, ranking</p>
+          <p className="label-meta mono"><span className="paren">( Winners )</span><br />Vision, tabular, ranking</p>
         </div>
         <ul className="work">
           {featured.map((p) => (
@@ -79,7 +129,7 @@ export default function Home() {
                 <span className="wcard__panel">
                   <span className="wcard__row">
                     <span className="wcard__title">{p.title}</span>
-                    <span className="wcard__meta">{p.month ?? "2026"}<br />{p.place}, {p.event}</span>
+                    <span className="wcard__meta mono">{p.month ?? "2026"}<br />{p.place}, {p.event}</span>
                   </span>
                   <span className="wcard__cta">View case <Arrow /></span>
                 </span>
@@ -89,11 +139,84 @@ export default function Home() {
         </ul>
       </section>
 
-      {/* Right now: Vantra's live table */}
+      {/* Leaderboards: Vantra's testimonial row, filled with results */}
+      <section id="achievements" className="sec pan" aria-labelledby="ach-h" data-hpan>
+        <div className="head">
+          <h2 id="ach-h" className="h2" data-split="lines">What the<br />leaderboards say.</h2>
+          <p className="label-meta mono"><span className="paren">( {wins.length} wins / {placed.length} )</span><br />National and international</p>
+        </div>
+        <div className="track-wrap">
+          <ul className="track track--ach" data-hpan-track aria-label="Achievements">
+            <li className="acard acard--score">
+              <span className="acard__score"><b>{wins.length}</b><small>/{placed.length}</small></span>
+              <span className="acard__lead">{wins.length} wins across {placed.length} data science competitions in 2026, two of them first places.</span>
+              <span className="acard__foot">
+                <span className="medals" aria-hidden="true">
+                  {wins.map((w) => <i key={w.slug}>{w.place!.slice(0, 3)}</i>)}
+                </span>
+                <span className="acard__footlabel mono">{numbers[0].label}</span>
+              </span>
+            </li>
+            {placed.map((p) => (
+              <li key={p.slug}>
+                <a className="acard" href={`/work/${p.slug}/`} data-title={p.title}>
+                  <span className="acard__top">
+                    <span className="acard__place">{p.place}</span>
+                    <span className="acard__event mono">{p.event}{p.level && <>, {p.level}</>}</span>
+                  </span>
+                  <span className="acard__quote">{p.summary}</span>
+                  <span className="acard__by">
+                    <b>{p.title}</b>
+                    <small className="mono">{[p.month, p.rank].filter(Boolean).join(". ") || "2026"}</small>
+                  </span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      {/* Projects: Athilla's list with a sticky preview */}
+      <section id="projects" className="sec" aria-labelledby="proj-h">
+        <div className="head">
+          <h2 id="proj-h" className="h2" data-split="lines">Projects beyond<br />the leaderboard.</h2>
+          <p className="label-meta mono"><span className="paren">( {others.length} projects )</span><br />Course, full stack, ML</p>
+        </div>
+        <div className="proj" data-proj>
+          <ol className="proj__list">
+            {others.map((p, i) => (
+              <li key={p.slug}>
+                <a className="prow" href={`/work/${p.slug}/`} data-title={p.title} data-pv={i} aria-current={i === 0 ? "true" : undefined}>
+                  <span className="prow__top">
+                    <span className="prow__title">{p.title}<Arrow /></span>
+                    <span className="prow__meta mono">{[p.category, p.course].filter(Boolean).join(", ")}</span>
+                  </span>
+                  <span className="prow__sum">{p.summary}</span>
+                  <span className="prow__result mono">{p.metric ? `${p.metric.value} ${p.metric.label}` : p.event}</span>
+                </a>
+              </li>
+            ))}
+          </ol>
+          <div className="proj__preview" aria-hidden="true">
+            {others.map((p, i) => (
+              <figure className="pv" data-on={i === 0 || undefined} key={p.slug}>
+                {p.image ? (
+                  <Image src={p.image} alt="" fill sizes="40vw" style={{ objectFit: "cover" }} />
+                ) : (
+                  <Glow seed={`pv-${p.slug}`} className="pv__glow" />
+                )}
+                <figcaption className="pv__cap mono">{p.image ? p.title : `${p.title}, preview placeholder`}</figcaption>
+              </figure>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Right now: Vantra's live table, then organizations */}
       <section id="now" className="sec" aria-labelledby="now-h">
         <div className="head">
           <h2 id="now-h" className="h2" data-split="lines">Where I am<br />right now.</h2>
-          <p className="label-meta"><span className="paren">( {active} active )</span><br />Updated Nov 2026</p>
+          <p className="label-meta mono"><span className="paren">( {active} active )</span><br />Updated Nov 2026</p>
         </div>
         <ol className="live">
           {experience.map((e) => (
@@ -102,12 +225,12 @@ export default function Home() {
                 <h3>{e.role}</h3>
                 <p>{e.org}</p>
               </div>
-              <p className="live__cat">{e.type}</p>
+              <p className="live__cat mono">{e.type}</p>
               <div className="live__progress">
-                <p className="live__pmeta"><span>{e.now ? "Ongoing" : "Completed"}</span></p>
+                <p className="live__pmeta mono"><span>{e.now ? "Ongoing" : "Completed"}</span></p>
                 <span className={`live__bar${e.now ? " is-live" : ""}`}><i /></span>
               </div>
-              <p className="live__end">{e.when}</p>
+              <p className="live__end mono">{e.when}</p>
               <p className="live__note">{e.note}</p>
             </li>
           ))}
@@ -116,98 +239,63 @@ export default function Home() {
               <h3>{education.degree}</h3>
               <p>{education.school}, GPA {education.gpa}</p>
             </div>
-            <p className="live__cat">Degree</p>
+            <p className="live__cat mono">Degree</p>
             <div className="live__progress">
-              <p className="live__pmeta"><span>Year {year} of 4</span><span>{Math.round(progress * 100)}%</span></p>
+              <p className="live__pmeta mono"><span>Year {year} of 4</span><span>{Math.round(progress * 100)}%</span></p>
               <span className="live__bar" role="img" aria-label={`Degree ${Math.round(progress * 100)}% complete`}><i style={{ width: `${progress * 100}%` }} /></span>
             </div>
-            <p className="live__end">Graduates Aug 2028</p>
+            <p className="live__end mono">Graduates Aug 2028</p>
           </li>
         </ol>
+        <div className="orgs">
+          <h3 className="orgs__title">Organizations and committees</h3>
+          <ul className="orgs__list">
+            {organizations.map((o) => (
+              <li key={o.role + o.org}>
+                <span className="orgs__role">{o.role}<span>, {o.org}</span></span>
+                <span className="orgs__when mono">{o.when}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
       </section>
 
-      {/* Practices: horizontal card track */}
-      <section className="sec" aria-labelledby="do-h">
+      {/* Practices with their tools */}
+      <section id="skills" className="sec pan" aria-labelledby="do-h" data-hpan>
         <div className="head">
           <h2 id="do-h" className="h2" data-split="lines">What I<br />actually do.</h2>
-          <p className="label-meta"><span className="paren">( Four practices )</span><br />One engineer</p>
+          <p className="label-meta mono"><span className="paren">( Four practices )</span><br />And the tools behind them</p>
         </div>
         <div className="track-wrap">
-          <ul className="track" data-track tabIndex={0} aria-label="Practices, scroll sideways">
+          <ul className="track" data-hpan-track aria-label="Practices">
             {practices.map((p, i) => (
               <li className="pcard" key={p.title}>
-                <span className="paren pcard__num">( {String(i + 1).padStart(3, "0")} )</span>
+                <span className="paren pcard__num mono">( {String(i + 1).padStart(3, "0")} )</span>
                 <span className="pixel" aria-hidden="true">
                   {[...marks[i % marks.length]].map((b, j) => <i key={j} className={b === "1" ? "on" : undefined} />)}
                 </span>
                 <span className="pcard__body">
-                  <h3 className="pcard__title">{p.title}</h3>
+                  <h3 className="pcard__title mono">{p.title}</h3>
                   <p className="pcard__text">{p.text}</p>
-                  <p className="pcard__proof">{p.proof}</p>
+                  <ul className="tags" aria-label={`${p.title} tools`}>{p.tools.map((t) => <li key={t}>{t}</li>)}</ul>
+                  <p className="pcard__proof mono">{p.proof}</p>
                 </span>
               </li>
             ))}
           </ul>
-          <button type="button" className="track__next" data-track-next aria-label="Next practices">
-            <svg viewBox="0 0 18 18" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true"><path d="M4 9h10M10 5l4 4-4 4" /></svg>
-          </button>
         </div>
       </section>
 
-      {/* The record: centered head + wide photo frame */}
-      <section className="sec reel" aria-labelledby="reel-h">
-        <p className="label-meta reel__kicker">The record</p>
-        <h2 id="reel-h" className="h1 reel__title" data-split="lines">Ten competitions<br />in one year.</h2>
-        <div className="reel__frame">
-          <Portrait src={site.photo.wide} className="reel__photo" sizes="92vw" parallax={0.07} />
-          <span className="reel__pill">
-            <span className="reel__dot" aria-hidden="true" />
-            {site.name}
-            <span className="reel__sep" aria-hidden="true" />
-            <span className="reel__muted">Bandung</span>
-          </span>
-        </div>
-      </section>
-
-      {/* Achievements: Vantra's testimonial row, filled with results */}
-      <section id="achievements" className="sec" aria-labelledby="ach-h">
-        <div className="head">
-          <h2 id="ach-h" className="h2" data-split="lines">What the<br />leaderboards say.</h2>
-          <p className="label-meta"><span className="paren">( {wins.length} wins / {placed.length} )</span><br />National and international</p>
-        </div>
-        <div className="track-wrap">
-          <ul className="track track--ach" data-track tabIndex={0} aria-label="Achievements, scroll sideways">
-            <li className="acard acard--score">
-              <span className="acard__score"><b>{wins.length}</b><small>/{placed.length}</small></span>
-              <span className="acard__lead">{wins.length} wins across {placed.length} data science competitions in 2026, two of them first places.</span>
-              <span className="acard__foot">
-                <span className="medals" aria-hidden="true">
-                  {wins.map((w) => <i key={w.slug}>{w.place!.slice(0, 3)}</i>)}
-                </span>
-                <span className="acard__footlabel">{numbers[0].label}</span>
-              </span>
-            </li>
-            {placed.map((p) => (
-              <li key={p.slug}>
-                <a className="acard" href={`/work/${p.slug}/`} data-title={p.title} data-preview={p.media?.src}>
-                  <span className="acard__top">
-                    <span className="acard__place">{p.place}</span>
-                    <span className="acard__event">{p.event}{p.level && <>, {p.level}</>}</span>
-                  </span>
-                  <span className="acard__quote">{p.summary}</span>
-                  <span className="acard__by">
-                    <b>{p.title}</b>
-                    <small>{[p.month, p.rank].filter(Boolean).join(". ") || "2026"}</small>
-                  </span>
-                </a>
-              </li>
-            ))}
-          </ul>
-          <button type="button" className="track__next" data-track-next aria-label="Next achievements">
-            <svg viewBox="0 0 18 18" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true"><path d="M4 9h10M10 5l4 4-4 4" /></svg>
-          </button>
-        </div>
-      </section>
+      <div className="sec sec--tight">
+        <dl className="also">
+          {extraSkills.map((g) => (
+            <div key={g.group}>
+              <dt className="mono">{g.group}</dt>
+              <dd>{g.items.join(", ")}</dd>
+            </div>
+          ))}
+        </dl>
+      </div>
 
       {/* FAQ */}
       <section id="faq" className="sec faq" aria-labelledby="faq-h">
@@ -216,45 +304,13 @@ export default function Home() {
           {faq.map((f, i) => (
             <details className="faq__item" key={f.q} open={i === 0}>
               <summary className="faq__q">{f.q}<span className="faq__icon" aria-hidden="true" /></summary>
-              <p className="faq__a">{f.a}</p>
+              <div className="faq__body"><p className="faq__a">{f.a}</p></div>
             </details>
           ))}
         </div>
       </section>
 
-      {/* Earlier projects: Vantra's journal (two image cards, then the index) */}
-      <section className="sec" aria-labelledby="more-h">
-        <div className="head">
-          <h2 id="more-h" className="h2" data-split="lines">Earlier<br />projects.</h2>
-        </div>
-        <ul className="jcards">
-          {archive.slice(0, 2).map((p) => (
-            <li key={p.slug}>
-              <a className="jcard" href={`/work/${p.slug}/`} data-title={p.title}>
-                <Glow seed={p.slug} parallax={0.06} className="jcard__img" />
-                <span className="jcard__text">
-                  <span className="jcard__meta">{p.category}<span>{p.event}</span></span>
-                  <span className="jcard__title">{p.summary}</span>
-                </span>
-              </a>
-            </li>
-          ))}
-        </ul>
-        <ul className="index">
-          {archive.map((p) => (
-            <li key={p.slug}>
-              <a className="index__row" href={`/work/${p.slug}/`} data-title={p.title} data-preview={p.media?.src}>
-                <span className="index__cat">{p.category}</span>
-                <span className="index__title">{p.title}</span>
-                <span className="index__meta">{p.metric ? `${p.metric.value} ${p.metric.label}` : p.event}</span>
-                <Arrow />
-              </a>
-            </li>
-          ))}
-        </ul>
-      </section>
-
-      {/* CTA: full-bleed dark section */}
+      {/* CTA */}
       <section id="contact" className="cta" aria-labelledby="cta-h">
         <Glow seed="contact" live band={0.78} parallax={0.08} className="cta__bg" />
         <div className="cta__inner">
@@ -262,9 +318,10 @@ export default function Home() {
           <p className="cta__text">Internships, research, or a teammate for the next competition.</p>
           <div className="cta__actions">
             <Btn href={`mailto:${site.email}`}>Email me</Btn>
+            {site.cvUrl && <Btn href={site.cvUrl} tone="dark" external>Download CV</Btn>}
             <Btn href={site.linkedin} tone="dark" external>LinkedIn</Btn>
           </div>
-          <p className="cta__mail">{site.email}</p>
+          <p className="cta__mail mono">{site.email}</p>
         </div>
       </section>
     </>

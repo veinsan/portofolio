@@ -36,21 +36,89 @@ export function setupMotion() {
     last = y;
   });
 
-  // Card tracks: the arrow pages forward one card and wraps to the start at the end.
+  // Projects preview + pinned horizontal sections.
   onPage(() => {
     const off: (() => void)[] = [];
-    document.querySelectorAll<HTMLButtonElement>('[data-track-next]').forEach((btn) => {
-      const track = btn.parentElement?.querySelector<HTMLElement>('[data-track]');
-      if (!track) return;
-      const go = () => {
-        const card = track.firstElementChild as HTMLElement | null;
-        const step = (card?.offsetWidth ?? 300) + parseFloat(getComputedStyle(track).columnGap || '16');
-        const atEnd = track.scrollLeft + track.clientWidth >= track.scrollWidth - 4;
-        track.scrollTo({ left: atEnd ? 0 : track.scrollLeft + step, behavior: prefersReducedMotion() ? 'auto' : 'smooth' });
+
+    // Projects: the sticky preview follows the row under the pointer or keyboard focus.
+    const proj = document.querySelector<HTMLElement>('[data-proj]');
+    if (proj) {
+      const frames = [...proj.querySelectorAll<HTMLElement>('.pv')];
+      const rows = [...proj.querySelectorAll<HTMLElement>('[data-pv]')];
+      const show = (e: Event) => {
+        const row = e.currentTarget as HTMLElement;
+        const i = Number(row.dataset.pv);
+        frames.forEach((f, j) => f.toggleAttribute('data-on', j === i));
+        rows.forEach((r) => (r === row ? r.setAttribute('aria-current', 'true') : r.removeAttribute('aria-current')));
       };
-      btn.addEventListener('click', go);
-      off.push(() => btn.removeEventListener('click', go));
-    });
+      rows.forEach((r) => { r.addEventListener('pointerenter', show); r.addEventListener('focus', show); });
+      off.push(() => rows.forEach((r) => { r.removeEventListener('pointerenter', show); r.removeEventListener('focus', show); }));
+    }
+
+    // FAQ: animate <details> open and close (native toggle stays the no-JS/reduced-motion path).
+    if (!prefersReducedMotion()) {
+      document.querySelectorAll<HTMLDetailsElement>('.faq__item').forEach((d) => {
+        const summary = d.querySelector('summary');
+        const body = d.querySelector<HTMLElement>('.faq__body');
+        if (!summary || !body) return;
+        const click = (e: Event) => {
+          e.preventDefault();
+          const closing = d.open && !d.classList.contains('is-closing');
+          gsap.killTweensOf(body);
+          if (closing) {
+            d.classList.add('is-closing');
+            gsap.to(body, { height: 0, opacity: 0, duration: 0.45, ease: 'power3.inOut',
+              onComplete: () => { d.open = false; d.classList.remove('is-closing'); gsap.set(body, { clearProps: 'height,opacity' }); } });
+          } else {
+            const from = d.open ? body.offsetHeight : 0; // reopening mid-close starts where it is
+            d.classList.remove('is-closing');
+            d.open = true;
+            gsap.fromTo(body, { height: from, opacity: d.open && from ? gsap.getProperty(body, 'opacity') : 0 },
+              { height: 'auto', opacity: 1, duration: 0.6, ease: ease.out, clearProps: 'height,opacity' });
+          }
+        };
+        summary.addEventListener('click', click);
+        off.push(() => summary.removeEventListener('click', click));
+      });
+    }
+
+    // Pinned horizontal sections (Jason's "drag with scroll"): the section holds still while
+    // vertical scroll slides its track sideways, so nothing needs a sideways scroll.
+    // Reduced motion skips this; the CSS lays the cards out as a wrapping grid instead.
+    if (!prefersReducedMotion()) {
+      document.querySelectorAll<HTMLElement>('[data-hpan]').forEach((section) => {
+        const track = section.querySelector<HTMLElement>('[data-hpan-track]');
+        const frame = track?.parentElement;
+        if (!track || !frame) return;
+        // Slide until the last card's right edge sits one gutter from the viewport edge.
+        const dist = () => {
+          const last = track.lastElementChild as HTMLElement | null;
+          if (!last) return 0;
+          const right = last.getBoundingClientRect().right - (gsap.getProperty(track, 'x') as number);
+          const gutter = parseFloat(getComputedStyle(track).paddingRight) || 0;
+          return Math.max(0, Math.ceil(right + gutter - document.documentElement.clientWidth));
+        };
+        const tween = gsap.to(track, {
+          x: () => -dist(),
+          ease: 'none',
+          scrollTrigger: {
+            trigger: section, start: 'top top', end: () => `+=${dist()}`,
+            pin: true, scrub: 0.6, invalidateOnRefresh: true, refreshPriority: 1,
+          },
+        });
+        // Keyboard: tabbing to a card off to the side scrolls the page to where that card is in view.
+        const focus = (e: FocusEvent) => {
+          const card = (e.target as HTMLElement).closest('li');
+          const st = tween.scrollTrigger;
+          if (!card || !st) return;
+          const x = Math.min(dist(), Math.max(0, card.offsetLeft - frame.clientWidth / 2 + card.offsetWidth / 2));
+          scrollTo({ top: st.start + x, behavior: 'instant' });
+        };
+        track.addEventListener('focusin', focus);
+        off.push(() => track.removeEventListener('focusin', focus));
+      });
+    }
+
     return () => off.forEach((f) => f());
   });
 

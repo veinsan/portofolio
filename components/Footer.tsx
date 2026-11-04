@@ -16,7 +16,7 @@ export default function Footer() {
       </div>
       <div className="foot__mid">
         <p className="foot__about">
-          {site.name} is an AI and ML engineer and Information Systems and Technology student at ITB,
+          {site.name} is an AI and software engineer, data analyst and scientist, studying Information Systems and Technology at ITB,
           working on computer vision, tabular ML and the backends that serve them.
         </p>
         <ul className="foot__links">
@@ -26,7 +26,7 @@ export default function Footer() {
         </ul>
       </div>
       <div className="foot__bar">
-        <p>© 2026 {site.name}. Set in Inter and Instrument Sans.</p>
+        <p>© 2026 {site.name}. Set in Boska, Albert Sans and JetBrains Mono.</p>
         <p>{site.location}</p>
       </div>
     </footer>

@@ -5,24 +5,27 @@
 export const site = {
   name: "Riantama Putra",
   initials: "RP",
-  role: "Data Science & AI Engineer",
+  role: "AI and Software Engineer, Data Analyst and Scientist",
   email: "riantamaputra751@gmail.com",
   location: "Bandung, Indonesia",
   url: "https://riantamaputra.tech",
   github: "https://github.com/veinsan",
   linkedin: "https://www.linkedin.com/in/riantamaputra/",
   description:
-    "AI and ML engineer at ITB focused on computer vision and tabular ML. 4× data science competition winner, with ten competition results in 2026.",
+    "AI and software engineer, data analyst and scientist at ITB. Computer vision and tabular ML, 4× data science competition winner in 2026.",
   headline: "4× Data Science Competition Winner",
   /** Portrait crop for small frames, landscape for the wide frame. Replace the files to change the photo. */
   photo: { portrait: "/photo/riantama.jpg", wide: "/photo/riantama-wide.jpg" },
+  /** Put a PDF in public/ (e.g. "/cv.pdf") and the Download CV buttons appear. */
+  cvUrl: "",
 };
 
 export const nav = [
+  { label: "About", href: "#about", meta: "AI Lab, ITB" },
   { label: "Work", href: "#work", meta: "Four winners" },
-  { label: "Right now", href: "#now", meta: "AI Lab, ITB" },
   { label: "Achievements", href: "#achievements", meta: "Ten in 2026" },
-  { label: "FAQ", href: "#faq", meta: "Before you reach out" },
+  { label: "Projects", href: "#projects", meta: "Course and personal" },
+  { label: "Experience", href: "#now", meta: "Roles and committees" },
   { label: "Contact", href: "#contact", meta: "Email or LinkedIn" },
 ];
 
@@ -48,8 +51,13 @@ export type Project = {
   result: string;
   featured?: boolean;
   archive?: boolean;
-  /** Earlier projects only: the list's category column. */
+  /** Projects list: the category column, e.g. "Course project", "Full stack". */
   category?: string;
+  /** Course code for a tugas besar, e.g. "IF2050". */
+  course?: string;
+  year?: string;
+  /** Screenshot in public/ (e.g. "/projects/scribe.webp"); a generated cover shows until then. */
+  image?: string;
 };
 
 export const projects: Project[] = [
@@ -255,7 +263,8 @@ export const projects: Project[] = [
   },
   {
     slug: "belajarduludek",
-    category: "Full stack",
+    category: "Course project",
+    course: "II2210",
     title: "BelajarDuluDek",
     archive: true,
     event: "Deployed to production",
@@ -293,6 +302,72 @@ export const projects: Project[] = [
     problem: "Transcribe audio and video fully offline, without a GPU, and know who said what.",
     approach: "faster-whisper with int8 quantization for CPU inference, pyannote.audio for diarization, and a resumable batch CLI.",
     result: "Exports TXT, JSON, SRT and VTT.",
+  },
+  {
+    slug: "deardiary",
+    title: "DearDiary",
+    archive: true,
+    category: "Course project",
+    course: "IF2050",
+    event: "Team project, IF2050",
+    summary: "A desktop app for tracking innovation projects, from the first idea to prototype versions.",
+    stack: ["Java", "JavaFX", "PostgreSQL", "Maven"],
+    repoUrl: "https://github.com/veinsan/IF2050-2026-K01-G12-DearDiary",
+    problem: "Manage internal innovation projects in one desktop app: ideas, experiment logs and prototype version history.",
+    approach: "A JavaFX app on PostgreSQL built by a course team. My part was the login and authentication module with role-based access control.",
+    result: "Idea tracking, experiment logs and prototype history behind role-based sign-in.",
+  },
+  {
+    slug: "nimonscooked",
+    title: "Nimonscooked",
+    archive: true,
+    category: "Course project",
+    event: "Java game",
+    summary: "A cooperative cooking game with multi-threaded cooking and cutting stations.",
+    stack: ["Java", "LibGDX"],
+    repoUrl: "https://github.com/veinsan/nimonscooked",
+    problem: "Build a cooperative cooking simulation where several stations work at the same time.",
+    approach: "Multi-threaded concurrency for the cooking and cutting stations, a state machine for ingredient processing, and the Singleton, Factory, Observer and MVC patterns.",
+    result: "A playable LibGDX game with concurrent stations and a clear object model.",
+  },
+  {
+    slug: "gelap-nyawang",
+    title: "Ganyang Lapar di Gelap Nyawang",
+    archive: true,
+    category: "Full stack",
+    event: "Directory platform",
+    summary: "A directory of local food and small businesses around Gelap Nyawang, with live search.",
+    stack: ["Next.js", "Tailwind CSS", "Framer Motion"],
+    repoUrl: "https://github.com/veinsan/GelapNyawang",
+    problem: "Help people find local food and UMKM listings around the Gelap Nyawang area.",
+    approach: "I built the main landing page and the directory page end to end: live search, category filtering and dark mode.",
+    result: "A searchable directory of local businesses.",
+  },
+  {
+    slug: "nimonshospital",
+    title: "NimonsHospital",
+    archive: true,
+    category: "Course project",
+    event: "Terminal app in C",
+    summary: "A terminal hospital management system with multi-role login and patient queues.",
+    stack: ["C"],
+    repoUrl: "https://github.com/veinsan/NimonsHospital",
+    problem: "Run a hospital's core flows from the terminal for several kinds of user.",
+    approach: "Multi-role authentication, queue-based patient scheduling, and sorting and searching written by hand: bubble sort, selection sort and binary search.",
+    result: "A working terminal system built on core data structures and algorithms.",
+  },
+  {
+    slug: "fithealth",
+    title: "Fithealth",
+    archive: true,
+    category: "Full stack",
+    event: "Health platform",
+    summary: "A digital health platform for tracking personal metrics, building habits and assessing risk.",
+    stack: ["Next.js", "TypeScript", "PostgreSQL"],
+    repoUrl: "https://github.com/veinsan/Fithealth",
+    problem: "Give people one place to track health metrics and build healthier habits.",
+    approach: "A Next.js and TypeScript app on PostgreSQL covering metric tracking, habit building and risk assessment.",
+    result: "Tracking, habits and risk assessment in one platform.",
   },
 ];
 
@@ -362,21 +437,25 @@ export const certifications = [
 export const practices = [
   {
     title: "Computer vision",
+    tools: ["PyTorch", "timm", "DINOv3", "Hugging Face", "YOLO"],
     text: "Foundation-model backbones, DINOv3 and DINOv2, adapted for scripts, disasters, packages, fields and faces.",
     proof: "SCRIBE, GRIT, RESI, ATLAS",
   },
   {
     title: "Tabular and forecasting",
+    tools: ["LightGBM", "XGBoost", "CatBoost", "Optuna", "SHAP", "scikit-learn", "Pandas"],
     text: "Gradient-boosted ensembles tuned with Optuna and explained with SHAP, on messy real data.",
     proof: "RETAIN, GALON, HARVEST",
   },
   {
     title: "Backend systems",
+    tools: ["NestJS", "FastAPI", "Django", "PostgreSQL", "Drizzle", "Prisma", "Supabase", "Docker"],
     text: "Typed APIs with authorization, approval flows and tests, from NestJS to Django.",
     proof: "AIAA ITB ERP, 136 tests",
   },
   {
     title: "Agentic AI",
+    tools: ["Supervity Auto", "Slack API", "Supabase"],
     text: "Multi-agent workflows that hand real cases to the right people, and what I am exploring next.",
     proof: "HR Command Center",
   },
@@ -393,7 +472,7 @@ export const faq = [
   },
   {
     q: "What do you work with?",
-    a: "PyTorch, timm and Hugging Face for vision; LightGBM, XGBoost, CatBoost, Optuna and SHAP for tabular work; NestJS, FastAPI, Django and PostgreSQL for backends.",
+    a: "PyTorch, timm and Hugging Face for vision. LightGBM, XGBoost, CatBoost, Optuna and SHAP for tabular work. NestJS, FastAPI, Django and PostgreSQL for backends.",
   },
   {
     q: "Can I see the code?",
@@ -417,4 +496,28 @@ export const skills = [
   { group: "Backend and cloud", items: ["NestJS", "FastAPI", "Django", "Node.js", "PostgreSQL", "Drizzle ORM", "Prisma ORM", "Supabase", "Docker", "Vercel"] },
   { group: "Languages", items: ["Python", "TypeScript", "JavaScript", "C", "Java", "SQL"] },
   { group: "Frontend and tools", items: ["React", "Next.js", "Tailwind CSS", "Git", "Linux", "Swagger/OpenAPI", "CI/CD"] },
+];
+
+/** The photo strip. Add `src` (an image in public/) to replace a placeholder frame. */
+export const moments: { caption: string; src?: string }[] = [
+  { caption: "1st Place, INFEST XII 2026" },
+  { caption: "1st Place, Big Data Competition 2026" },
+  { caption: "2nd Place, DATASCAPE 2026" },
+  { caption: "3rd Place, DAC PRS ITS 2026" },
+  { caption: "Grand Finalist, AutoPilot Asia, Kuala Lumpur" },
+  { caption: "COMPFEST 18 Academy, Best Case Study Team" },
+];
+
+/** From LinkedIn, Nov 2026. */
+export const organizations = [
+  { role: "Head of Sponsorship", org: "Arkavidia 11.0", when: "May 2026 to now" },
+  { role: "Field Staff", org: "Wisuda April HMIF 2026", when: "Mar to Apr 2026" },
+  { role: "People Development Intern", org: "HMIF ITB", when: "Oct 2025 to Apr 2026" },
+  { role: "Liaison Officer", org: "Wisuda Oktober HMIF 2025", when: "Oct 2025" },
+  { role: "Mentor", org: "OSKM ITB 2025", when: "Jul to Aug 2025" },
+  { role: "Head of Creative", org: "Aksi Angkatan SPARTA HMIF ITB 2025", when: "2025" },
+  { role: "Videographer", org: "Aku Masuk ITB 2025", when: "Dec 2024 to Feb 2025" },
+  { role: "Photographer and Documentation Staff", org: "STEI-K ITB 2024", when: "Dec 2024 to Jun 2025" },
+  { role: "Head of Documentation", org: "STEI TPB Cup 2024", when: "Oct 2024 to May 2025" },
+  { role: "Head of Public Relations", org: "Formatur Committee STEI-K ITB 2024", when: "Sep to Oct 2024" },
 ];

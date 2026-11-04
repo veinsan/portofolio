@@ -61,7 +61,7 @@ export default function Glow({ seed, live = false, band, parallax, className = '
       p: r() * 6.28,
     };
     const touch = isTouch();
-    const LINES = touch ? 18 : 40;
+    const LINES = touch ? 18 : 28;
     const s = { t: 0, px: 0, py: 0 };
     let w = 0, h = 0, lw = 0, lh = 0, dpr = 1;
 
@@ -69,7 +69,10 @@ export default function Glow({ seed, live = false, band, parallax, className = '
       // A quarter-resolution canvas: smooth gradients, a fraction of the pixels.
       w = c.width = Math.max(1, Math.round(c.clientWidth / 4));
       h = c.height = Math.max(1, Math.round(c.clientHeight / 4));
-      dpr = touch ? 1 : Math.min(devicePixelRatio || 1, 1.5);
+      // Every redraw uploads the whole bitmap to the compositor, which dominated desktop frames
+      // (1.4 s of commit per 3 s idle at 1x). Drawn at 0.6x and scaled up by CSS: ~2.8x fewer
+      // pixels, and the slight softening suits the light-trail look.
+      dpr = 0.6;
       lw = lc.width = Math.round(lc.clientWidth * dpr);
       lh = lc.height = Math.round(lc.clientHeight * dpr);
       draw();
@@ -98,14 +101,14 @@ export default function Glow({ seed, live = false, band, parallax, className = '
       lg.clearRect(0, 0, lw, lh);
       if (!lw) return;
       lg.globalCompositeOperation = 'lighter';
-      lg.lineWidth = Math.max(1, 0.9 * dpr);
+      lg.lineWidth = 1;
       const fade = lg.createLinearGradient(0, 0, lw, 0);
       fade.addColorStop(0, 'rgba(232,150,80,0)');
       fade.addColorStop(0.3, 'rgba(232,150,80,0.55)');
       fade.addColorStop(0.65, 'rgba(236,226,208,0.5)');
       fade.addColorStop(1, 'rgba(120,140,190,0.05)');
       lg.strokeStyle = fade;
-      const steps = touch ? 44 : 72, t = s.t * 1.6;
+      const steps = touch ? 44 : 52, t = s.t * 1.6;
       for (let i = 0; i < LINES; i++) {
         const u = i / (LINES - 1) - 0.5;
         lg.globalAlpha = 0.25 + 0.75 * (1 - Math.abs(u) * 2) ** 2; // brighter at the centre of the ribbon
@@ -133,7 +136,7 @@ export default function Glow({ seed, live = false, band, parallax, className = '
     if (!isTouch()) addEventListener('pointermove', move, { passive: true });
     // The drift is slow, so redraw every other frame (every third on touch): it halves the canvas
     // and the backdrop-blur work behind the glass panels without a visible difference.
-    const every = touch ? 3 : 2;
+    const every = 3;
     let frame = 0;
     const tick = () => {
       if (++frame % every) return;
