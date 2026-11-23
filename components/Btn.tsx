@@ -1,47 +1,49 @@
-// Vantra button: the label rolls up to a copy of itself, the arrow leaves top-right as a second
-// one arrives from bottom-left. Works as a link; `light` or `dark` fill.
+// Pill link. Internal pages go through next/link so the page transition runs.
 import Link from "next/link";
+import { Arrow, Download } from "./Icons";
 
-const Arrow = () => (
-  <svg viewBox="0 0 18 18" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
-    <path d="M5 13 13 5M6.5 5H13v6.5" />
-  </svg>
-);
+type Tone = "ink" | "line" | "soft";
+type Icon = "arrow" | "download" | "none";
 
 export default function Btn({
   href,
   children,
-  tone = "light",
+  tone = "ink",
+  icon = "arrow",
   external = false,
   title,
+  className = "",
 }: {
   href: string;
   children: string;
-  tone?: "light" | "dark";
+  tone?: Tone;
+  icon?: Icon;
   external?: boolean;
   title?: string;
+  className?: string;
 }) {
+  const cls = `pill${tone === "ink" ? "" : ` pill--${tone}`} ${className}`.trim();
   const inner = (
     <>
-      <span className="btn__label">
-        <span>{children}</span>
-        <span aria-hidden="true">{children}</span>
-      </span>
-      <span className="btn__chip" aria-hidden="true">
-        <Arrow />
-        <Arrow />
-      </span>
+      <span>{children}</span>
+      {icon === "arrow" && <Arrow />}
+      {icon === "download" && <Download />}
     </>
   );
-  const cls = `btn btn--${tone}`;
-  if (external || href.startsWith("mailto:"))
+  if (external || icon === "download" || href.startsWith("mailto:"))
     return (
-      <a className={cls} href={href} {...(external && { target: "_blank", rel: "noopener noreferrer" })}>
+      <a
+        className={cls}
+        href={href}
+        data-magnetic
+        {...(external && { target: "_blank", rel: "noopener noreferrer" })}
+        {...(icon === "download" && { download: "Riantama-Putra-CV.pdf" })}
+      >
         {inner}
       </a>
     );
   return (
-    <Link prefetch={false} className={cls} href={href} data-title={title}>
+    <Link prefetch={false} className={cls} href={href} data-title={title ?? children} data-magnetic>
       {inner}
     </Link>
   );

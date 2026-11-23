@@ -1,0 +1,183 @@
+/* Foundation: document, type roles, pills, tags, rings, reveal hooks. */
+html {
+  background: var(--bg);
+  -webkit-text-size-adjust: 100%;
+  scrollbar-color: var(--line-2) transparent;
+}
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-stopped { overflow: clip; }
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 1rem;
+  line-height: 1.625;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  overflow-x: clip;
+}
+::selection { background: var(--ink); color: var(--bg); }
+:focus-visible { outline: 2px solid var(--muted); outline-offset: 3px; }
+main:focus { outline: none; }
+h1, h2, h3, h4 { font-weight: 400; text-wrap: balance; }
+p { text-wrap: pretty; }
+img { max-width: 100%; }
+button { cursor: pointer; color: inherit; }
+svg { flex: none; }
+[id] { scroll-margin-top: var(--head); }
+
+.sr-only {
+  position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0;
+  overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0;
+}
+.skip-link {
+  position: fixed; left: 1rem; top: 1rem; z-index: 100;
+  padding: 0.75rem 1.25rem; border-radius: 999px; background: var(--ink); color: var(--bg);
+  translate: 0 -200%;
+}
+.skip-link:focus { translate: 0 0; }
+
+/* Layout */
+.column { width: min(var(--column), 100% - 2 * var(--gutter)); margin-inline: auto; }
+.wide { width: min(var(--wide), 100% - 2 * var(--gutter)); margin-inline: auto; }
+.section { position: relative; padding-block: var(--section); }
+
+/* Type roles */
+.display {
+  font-family: var(--serif);
+  font-size: var(--fs-display);
+  line-height: 1.05;
+  letter-spacing: -0.025em;
+}
+.h2 {
+  font-family: var(--serif);
+  font-size: var(--fs-h2);
+  line-height: 1.05;
+  letter-spacing: -0.022em;
+}
+.h3 {
+  font-family: var(--serif);
+  font-size: var(--fs-h3);
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+.subtitle {
+  color: var(--muted);
+  font-size: var(--fs-sub);
+  font-style: italic;
+  font-weight: 300;
+  line-height: 1.15;
+}
+.lead { color: var(--muted); font-size: var(--fs-lead); line-height: 1.625; }
+.prose { color: var(--ink-2); line-height: 1.7; }
+.label {
+  font-family: var(--mono);
+  font-size: var(--fs-label);
+  line-height: 1.4;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+.label--muted { color: var(--muted); }
+.meta {
+  font-family: var(--mono);
+  font-size: var(--fs-label);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.ulink {
+  text-decoration: underline;
+  text-underline-offset: 0.25em;
+  text-decoration-color: var(--line-2);
+  transition: color 0.2s, text-decoration-color 0.2s;
+}
+.ulink:hover { color: var(--ink); text-decoration-color: currentColor; }
+
+/* Section head: serif title left, aside right */
+.head { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 1.25rem 3rem; margin-bottom: clamp(2.5rem, 5vw, 4rem); }
+.head__aside { max-width: 28rem; }
+
+/* Pills */
+.pill {
+  display: inline-flex; align-items: center; justify-content: center; gap: 0.75rem;
+  min-height: 3.25rem; padding: 0.75rem 2rem;
+  border: 1px solid transparent; border-radius: 999px;
+  background: var(--ink); color: var(--bg);
+  font-size: 0.875rem; font-weight: 500; line-height: 1.25rem; white-space: nowrap;
+  transition: scale 0.3s var(--ease), background-color 0.25s, color 0.25s, border-color 0.25s;
+}
+.pill:hover { scale: 1.04; }
+.pill:active { scale: 0.98; }
+.pill--line { min-height: 2.75rem; padding: 0.6rem 1.4rem; background: transparent; color: var(--ink); border-color: var(--line-2); }
+.pill--line:hover { scale: 1; background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.pill--soft { background: var(--wash); color: var(--ink); border-color: var(--line); }
+.pill svg { width: 1rem; height: 1rem; transition: translate 0.35s var(--ease); }
+.pill:hover .icon-out { translate: 2px -2px; }
+.pill:hover .icon-down { translate: 0 2px; }
+
+.round {
+  display: inline-grid; place-items: center; width: 3.125rem; height: 3.125rem;
+  border-radius: 50%; color: var(--muted);
+  transition: background-color 0.2s, color 0.2s;
+}
+.round:hover { background: var(--wash); color: var(--ink); }
+.round svg { width: 1.375rem; height: 1.375rem; }
+
+.arrow-link {
+  display: inline-flex; align-items: center; gap: 0.6rem;
+  min-height: 2.75rem; border-bottom: 1px solid var(--line-2);
+  font-size: 0.875rem; font-weight: 500;
+  transition: border-color 0.2s;
+}
+.arrow-link svg { width: 1rem; height: 1rem; transition: translate 0.35s var(--ease); }
+.arrow-link:hover { border-color: currentColor; }
+.arrow-link:hover svg { translate: 4px 0; }
+
+/* Tags */
+.tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.tags li {
+  padding: 0.22rem 0.75rem;
+  border: 1px solid var(--tag-line); border-radius: 999px; background: var(--tag);
+  font-family: var(--mono); font-size: 0.6875rem; font-weight: 500; line-height: 1.5; letter-spacing: 0.025em;
+}
+
+/* Concentric rings */
+.rings { position: absolute; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; }
+.rings i {
+  position: absolute; left: 50%; top: 50%;
+  width: var(--d); aspect-ratio: 1;
+  border: 1px solid var(--c); border-radius: 50%;
+  translate: -50% -50%;
+}
+.rings i:nth-child(1) { --c: var(--ring-3); --d: min(80vw, 62.5rem); }
+.rings i:nth-child(2) { --c: var(--ring-2); --d: min(60vw, 46.875rem); }
+.rings i:nth-child(3) { --c: var(--ring-1); --d: min(40vw, 31.25rem); }
+
+/* Masked grid */
+.grid-bg {
+  position: absolute; inset: 0; z-index: 0; overflow: hidden; pointer-events: none;
+  mask-image: radial-gradient(closest-side, #000 35%, transparent);
+}
+.grid-bg::before {
+  content: ""; position: absolute; inset: -3rem;
+  background-image: linear-gradient(to right, var(--grid) 1px, transparent 1px), linear-gradient(to bottom, var(--grid) 1px, transparent 1px);
+  background-size: 3rem 3rem;
+  translate: var(--grid-x, 0) 0;
+}
+
+/* Reveals: hidden only when JS will show them, with a fallback if it never does. */
+.motion [data-split], .motion [data-reveal] { visibility: hidden; animation: reveal-fallback 0s 3s forwards; }
+.motion.gated [data-intro] { animation: none; }
+@keyframes reveal-fallback { to { visibility: visible; } }
+.split-line { padding-bottom: 0.06em; margin-bottom: -0.06em; }
+
+@media (max-width: 479px) {
+  .pill { padding-inline: 1.5rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+}

@@ -1,27 +1,24 @@
 import type { Metadata } from "next";
 import Btn from "@/components/Btn";
-import Glow from "@/components/Glow";
+import Rings from "@/components/Rings";
 
 export const metadata: Metadata = {
   title: "Page not found",
-  description: "This address is not part of the portfolio. Head back to the work index.",
+  description: "This address is not part of the portfolio. Head back home or browse the work.",
 };
 
 export default function NotFound() {
   return (
-    <section className="hero lost" aria-labelledby="lost-h">
-      <div className="hero__card">
-        <Glow seed="404" live band={0.3} className="hero__bg" />
-        <p className="lost__code">( 404 )</p>
-        <div className="hero__copy">
-        <h1 id="lost-h" className="hero__title">
-          <span className="hero__line" data-split="lines" data-intro>Not in the</span>
-          <span className="hero__line" data-split="lines" data-intro data-delay="0.08">training data.</span>
-        </h1>
-        </div>
-        <div className="status">
-          <p className="status__value">This address is not part of the portfolio.</p>
-          <Btn href="/" title="Index">Back to the work</Btn>
+    <section className="lost" data-no-close aria-labelledby="lost-title">
+      <Rings />
+      <span className="outlier" aria-hidden="true" />
+      <div className="lost__in">
+        <p className="lost__code">404</p>
+        <h1 id="lost-title" className="h2 lost__title" data-split="lines" data-intro>Out of distribution.</h1>
+        <p className="lead lost__text">This address was never in the training set. The page may have moved, or it never existed.</p>
+        <div className="lost__row">
+          <Btn href="/" title="Home">Go home</Btn>
+          <Btn href="/work/" tone="line" title="Work">Browse the work</Btn>
         </div>
       </div>
     </section>

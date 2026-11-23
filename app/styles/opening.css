@@ -1,0 +1,90 @@
+/* Loader, entry gate and opening. Home only, once per session, never under reduced motion.
+   The inline script in the layout adds .gated before first paint. */
+.opening { display: none; }
+
+.gated { overflow: hidden; }
+.gated .opening {
+  position: fixed; inset: 0; z-index: var(--z-opening);
+  display: block; overflow: hidden;
+  background: var(--bg); color: var(--ink);
+  clip-path: inset(0);
+  transition: background-color 0.5s, color 0.5s;
+}
+/* If the app never boots, the page shows through. */
+.gated:not(.is-booted) .opening { animation: opening-failsafe 0s 6s forwards; }
+@keyframes opening-failsafe { to { visibility: hidden; opacity: 0; pointer-events: none; } }
+
+.opening[data-phase="gate"], .opening[data-phase="show"] { background: #0b0c0e; color: #f1efe8; }
+
+.opening:focus { outline: none; }
+
+/* Loader */
+.op-load {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1.75rem;
+}
+.op-mark { font-family: var(--serif); font-size: clamp(9rem, 30vw, 24rem); line-height: 0.8; letter-spacing: -0.04em; color: var(--muted); }
+.op-folds { display: flex; gap: 0.4rem; }
+.op-folds i { width: 2rem; height: 3px; background: var(--line); transition: background-color 0.2s; }
+.op-folds i.is-done { background: var(--muted); }
+.opening:not([data-phase="load"]) .op-load { display: none; }
+
+/* Gate */
+.op-gate, .op-silent, .op-show, .op-skip { display: none; }
+[data-phase="gate"] .op-gate {
+  position: absolute; inset: 0; width: 100%;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1.5rem;
+  animation: op-in 0.7s var(--ease);
+}
+.op-gate:focus-visible { outline: none; }
+.op-gate:focus-visible .op-gate__title { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 0.16em; }
+.op-gate__title { font-family: var(--serif); font-size: clamp(4rem, 13vw, 12rem); line-height: 0.95; letter-spacing: -0.03em; }
+.op-gate__touch { display: none; }
+@media (hover: none) {
+  .op-gate__mouse { display: none; }
+  .op-gate__touch { display: inline; }
+}
+.op-gate__note { display: flex; align-items: center; gap: 0.75rem; color: #a9a7a1; font-size: 0.875rem; }
+.op-gate__note .eq i { animation: eq 0.8s ease-in-out infinite alternate; }
+.op-gate__note .eq i:nth-child(2n) { animation-delay: -0.4s; }
+[data-phase="gate"] .op-silent, [data-phase="show"] .op-skip {
+  position: absolute; bottom: max(1.5rem, env(safe-area-inset-bottom)); z-index: 2;
+  display: inline-flex; align-items: center; gap: 0.6rem;
+  min-height: 2.75rem; padding: 0 1.1rem;
+  border: 1px solid rgb(241 239 232 / 0.3); border-radius: 999px;
+  color: #cfccc5;
+}
+[data-phase="gate"] .op-silent { left: var(--gutter); }
+[data-phase="show"] .op-skip { right: var(--gutter); }
+.op-silent svg { width: 1rem; height: 1rem; }
+.op-silent:hover, .op-skip:hover { color: #fff; border-color: currentColor; }
+@keyframes op-in { from { opacity: 0; scale: 1.03; } }
+
+/* Opening */
+[data-phase="show"] .op-show { position: absolute; inset: 0; display: block; perspective: 1200px; }
+.op-scene {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  visibility: hidden; opacity: 0;
+  font-family: var(--serif);
+}
+.op-word { font-size: clamp(5rem, 19vw, 18rem); line-height: 0.9; letter-spacing: -0.03em; text-align: center; padding-inline: var(--gutter); }
+.op-word em { font-style: normal; color: #97a8c0; }
+.op-cols { position: absolute; inset: 0; display: grid; grid-template-columns: repeat(5, 1fr); }
+.op-cols i { border-left: 1px solid rgb(241 239 232 / 0.16); background: rgb(151 168 192 / 0.14); transform-origin: bottom; }
+.op-win { gap: clamp(1.5rem, 7vw, 8rem); padding: var(--gutter); }
+.op-win__photo { width: min(28vw, 54svh); aspect-ratio: 3 / 4; overflow: hidden; background: #191b1f; }
+.op-win__photo img { width: 100%; height: 100%; object-fit: cover; }
+.op-win__text { display: flex; flex-direction: column; gap: 1rem; width: min(38rem, 46vw); }
+.op-win__mark { font-size: clamp(7rem, 22vw, 20rem); line-height: 0.8; letter-spacing: -0.03em; }
+.op-win__event { font-size: clamp(1.75rem, 4vw, 3.75rem); line-height: 1.05; color: #97a8c0; }
+.op-name { flex-direction: column; gap: 1.5rem; text-align: center; padding: var(--gutter); }
+.op-name__big { position: relative; font-size: clamp(4.5rem, 15vw, 14rem); line-height: 0.88; letter-spacing: -0.03em; }
+.op-name__role { position: relative; color: #a9a7a1; }
+.op-name .rings i { border-color: rgb(241 239 232 / 0.2); }
+
+@media (max-width: 639px) {
+  .op-win { flex-direction: column; gap: 2rem; }
+  .op-win__photo { width: min(62vw, 34svh); }
+  .op-win__text { width: 100%; align-items: center; text-align: center; }
+}

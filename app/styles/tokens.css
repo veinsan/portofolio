@@ -1,0 +1,88 @@
+/* DESIGN.md, "Look". Every accent keeps 4.5:1 as text on its own theme's background. */
+:root {
+  color-scheme: light;
+  --bg: #fbfaf6;
+  --bg-2: #f3f1eb;
+  --ink: #15120e;
+  --ink-2: #46423c;
+  --muted: #566982;
+  --line: rgb(21 18 14 / 0.14);
+  --line-2: rgb(21 18 14 / 0.22);
+  --wash: rgb(21 18 14 / 0.05);
+  --grid: rgb(120 118 112 / 0.17);
+  --ring-1: rgb(21 18 14 / 0.2);
+  --ring-2: rgb(21 18 14 / 0.14);
+  --ring-3: rgb(21 18 14 / 0.09);
+  --tag: #f0eeea;
+  --tag-line: #d8d5d0;
+  --glass: rgb(251 250 246 / 0.72);
+
+  --swatch-slate: #566982;
+  --swatch-forest: #35654c;
+  --swatch-rust: #a5432a;
+  --swatch-cobalt: #2852c4;
+  --swatch-plum: #7a4389;
+
+  --serif: var(--font-serif), "Instrument Serif", ui-serif, Georgia, serif;
+  --sans: var(--font-sans), Inter, ui-sans-serif, system-ui, sans-serif;
+  --mono: var(--font-code), "JetBrains Mono", ui-monospace, monospace;
+
+  /* 88px at 1440, as in the reference. */
+  --fs-display: clamp(3.25rem, 2.1rem + 3.8vw, 5.5rem);
+  --fs-h2: clamp(2.5rem, 1.9rem + 2vw, 3.75rem);
+  --fs-h3: clamp(1.5rem, 1.3rem + 0.7vw, 1.875rem);
+  --fs-sub: clamp(1.5rem, 1.1rem + 1.3vw, 2.25rem);
+  --fs-lead: clamp(1rem, 0.94rem + 0.25vw, 1.125rem);
+  --fs-label: 0.75rem;
+
+  --gutter: clamp(1.5rem, 3vw, 2.5rem);
+  --column: 56rem;
+  --wide: 78rem;
+  --section: clamp(5.5rem, 10vw, 8.5rem);
+  --head: 6.25rem;
+
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-inout: cubic-bezier(0.76, 0, 0.24, 1);
+
+  --z-header: 50;
+  --z-menu: 55;
+  --z-progress: 60;
+  --z-curtain: 70;
+  --z-opening: 80;
+  --z-toast: 90;
+}
+
+[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #0e1013;
+  --bg-2: #15181c;
+  --ink: #f1efe8;
+  --ink-2: #bdbab2;
+  --muted: #97a8c0;
+  --line: rgb(241 239 232 / 0.16);
+  --line-2: rgb(241 239 232 / 0.26);
+  --wash: rgb(241 239 232 / 0.07);
+  --grid: rgb(160 170 185 / 0.11);
+  --ring-1: rgb(241 239 232 / 0.2);
+  --ring-2: rgb(241 239 232 / 0.13);
+  --ring-3: rgb(241 239 232 / 0.08);
+  --tag: #191c21;
+  --tag-line: #2c3139;
+  --glass: rgb(14 16 19 / 0.72);
+
+  --swatch-slate: #97a8c0;
+  --swatch-forest: #8fc3a4;
+  --swatch-rust: #eea086;
+  --swatch-cobalt: #93aeff;
+  --swatch-plum: #cfa2dc;
+}
+
+[data-accent="slate"] { --muted: var(--swatch-slate); }
+[data-accent="forest"] { --muted: var(--swatch-forest); }
+[data-accent="rust"] { --muted: var(--swatch-rust); }
+[data-accent="cobalt"] { --muted: var(--swatch-cobalt); }
+[data-accent="plum"] { --muted: var(--swatch-plum); }
+
+@media (max-width: 1023px) {
+  :root { --head: 2.5rem; }
+}

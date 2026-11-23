@@ -6,7 +6,7 @@ import { useEffect, useRef } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import { boot, cleanup, enter, leave, onPage, type PageFn } from './index';
 
-export function Engine({ setup }: { setup?: () => void }) {
+export function Engine({ setup }: { setup?: () => void | Promise<void> }) {
   const router = useRouter();
   const pathname = usePathname();
   const mode = useRef<'idle' | 'push' | 'pop'>('idle');
@@ -43,10 +43,7 @@ export function Engine({ setup }: { setup?: () => void }) {
     if (first.current) { first.current = false; return; }
     const pop = mode.current === 'pop';
     mode.current = 'idle';
-    enter({ transition: !pop, scrollTop: !pop }).then(() => {
-      // Cross-page anchors (/#work from a case page): scroll once the page is in place.
-      if (!pop && location.hash) document.querySelector(location.hash)?.scrollIntoView();
-    });
+    enter({ transition: !pop, scrollTop: !pop });
   }, [pathname]);
 
   return null;

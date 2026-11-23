@@ -1,14 +1,6 @@
-import { Albert_Sans, JetBrains_Mono } from "next/font/google";
-import localFont from "next/font/local";
+import { Instrument_Serif, Inter, JetBrains_Mono } from "next/font/google";
 
-// Boska (Fontshare, FFL): condensed high-contrast serif for display type.
-export const display = localFont({
-  src: [
-    { path: "../fonts/boska-500-normal.woff2", weight: "500", style: "normal" },
-    { path: "../fonts/boska-700-normal.woff2", weight: "700", style: "normal" },
-  ],
-  variable: "--font-display",
-  display: "swap",
-});
-export const text = Albert_Sans({ subsets: ["latin"], variable: "--font-text", display: "swap" });
-export const mono = JetBrains_Mono({ subsets: ["latin"], weight: ["400", "500"], variable: "--font-mono", display: "swap" });
+// The type system of the look reference: a tall serif for display, Inter for text, mono for labels.
+export const display = Instrument_Serif({ subsets: ["latin"], weight: "400", variable: "--font-serif", display: "swap" });
+export const sans = Inter({ subsets: ["latin"], style: ["normal", "italic"], variable: "--font-sans", display: "swap" });
+export const mono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-code", display: "swap" });

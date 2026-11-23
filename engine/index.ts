@@ -6,12 +6,12 @@
 // ScrollTriggers are reverted automatically. Return a cleanup for anything else.
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { initScroll, resetScroll, startScroll, stopScroll } from './scroll';
+import { initScroll, resetScroll, scrollToY, startScroll, stopScroll } from './scroll';
 import { initReveals } from './reveal';
 import { playEnter, playLeave } from './transition';
 import { prefersReducedMotion } from './env';
 
-export { onScroll, scrollState, stopScroll, startScroll } from './scroll';
+export { onScroll, scrollState, scrollToY, stopScroll, startScroll } from './scroll';
 export { setTransition } from './transition';
 export { ease, isTouch, isMobile, prefersReducedMotion } from './env';
 
@@ -51,14 +51,25 @@ function initPage() {
   requestAnimationFrame(() => ScrollTrigger.refresh());
 }
 
-export async function boot(setup?: () => void) {
+// Anchors land only after the page code has sized the sticky sections above them.
+function toHash() {
+  const el = location.hash && document.getElementById(decodeURIComponent(location.hash.slice(1)));
+  if (!el) return;
+  ScrollTrigger.refresh();
+  scrollToY(el.getBoundingClientRect().top + window.scrollY - (parseFloat(getComputedStyle(el).scrollMarginTop) || 0), true);
+}
+
+/** `setup` may return a promise (an opening, say): the entrance waits for it. */
+export async function boot(setup?: () => void | Promise<void>) {
   if (booted) return;
   booted = true;
   syncFlags();
   initScroll();
-  setup?.();
+  const ready = setup?.();
   initPage();
+  toHash();
   document.documentElement.classList.add('is-loaded');
+  await ready;
   intro?.play();
 }
 
@@ -81,7 +92,10 @@ export async function enter({ transition = true, scrollTop = true } = {}) {
   cleanup();
   if (scrollTop) resetScroll();
   initPage();
-  if (transition) await playEnter();
+  if (transition) {
+    toHash();
+    await playEnter();
+  }
   startScroll();
   intro?.play();
   document.getElementById('main')?.focus({ preventScroll: true });

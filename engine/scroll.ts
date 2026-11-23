@@ -46,6 +46,13 @@ export const onScroll = (fn: (s: ScrollState) => void) => {
 export const scrollState = () => state;
 export const stopScroll = () => lenis?.stop();
 export const startScroll = () => lenis?.start();
+/** Scroll to a position. `jump` skips the glide, and works while scrolling is stopped. */
+export function scrollToY(y: number, jump = false) {
+  if (lenis) {
+    lenis.resize(); // the page may have just changed height
+    lenis.scrollTo(y, { immediate: jump, force: jump });
+  } else scrollTo({ top: y, behavior: 'instant' });
+}
 export function resetScroll() {
   if (lenis) lenis.scrollTo(0, { immediate: true, force: true });
   else scrollTo(0, 0);
