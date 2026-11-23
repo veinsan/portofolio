@@ -892,7 +892,7 @@ export const education = {
   degree: "B.Sc. Information Systems and Technology",
   school: "Institut Teknologi Bandung",
   when: "Sep 2024 to Aug 2028, expected",
-  gpa: "3.34 / 4.00",
+  gpa: "3.64 / 4.00",
 };
 
 export const certifications = [{ title: "SummerCamp Machine Learning 2026", issuer: "Codelab Indonesia", when: "Aug 2026" }];

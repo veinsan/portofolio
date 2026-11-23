@@ -7,9 +7,14 @@ Next.js 16 (App Router) exported fully static, GSAP + Lenis for motion. No serve
 
 ## Editing content
 
-All copy lives in [`lib/data.ts`](lib/data.ts): identity, competition results, case studies, projects,
-experience, committees, toolkit and photos. The CV served by the Download CV buttons is `public/cv.pdf`
-(`site.cvUrl`). Photos live in `public/photo/` as WebP.
+All copy lives in [`lib/data.ts`](lib/data.ts): identity, every project (each gets a page at `/work/[slug]/`),
+the results on the medal board, experience, committees, skills and photos. The GitHub activity on /about is a
+dated snapshot in [`lib/activity.ts`](lib/activity.ts).
+
+- Project covers and slides: `public/projects/{slug}.webp`, a `{slug}-720.webp` copy, and `{slug}-shot{n}.webp`.
+  Set `cover` and `shots` in `lib/data.ts` to their pixel sizes.
+- Photos: `public/photo/` as WebP. Tool icons for the marquee: `public/icons/` (Simple Icons, CC0).
+- The CV behind every Download CV button is `public/cv.pdf` (`site.cvUrl`). Set it to `""` to hide the buttons.
 
 ## Development
 
@@ -23,10 +28,8 @@ Deploy the `out/` folder to any static host (Vercel, Netlify, GitHub Pages).
 
 ## Design notes
 
-- Cool paper ground, ink, and one heat accent taken from attention maps; night panels for posters, the photo band
-  and the close. Tokens are at the top of `app/globals.css`.
-- Type: Archivo (variable width) for everything, Fragment Mono for figures and labels.
-- Hero signature: `components/PatchPortrait.tsx` draws the photo as ViT patches with attention that follows the
-  pointer. Case posters in `components/Posters.tsx` are drawn from each project's own numbers.
-- Motion: `engine/` (Lenis, reveals, page transitions) and `motion/setup.ts`. Everything respects
-  `prefers-reduced-motion`.
+See `DESIGN.md`. In short: the look follows a serif-led editorial system (Instrument Serif, Inter, JetBrains Mono)
+on warm paper, the features include a skippable opening with original generative music (`motion/sound.ts`, no
+audio files), five accents and a dark theme, a CSS 3D medal board, sticky horizontal pans, and a scroll-drawn
+path. Motion lives in `engine/` and `motion/`. Everything respects `prefers-reduced-motion` and works without
+JavaScript.
